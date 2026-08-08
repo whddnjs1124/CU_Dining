@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Columbia Dining — what's open now</title>
+<meta name="description" content="Every Columbia dining hall and café on one page: open now, closing time, and today's menu.">
+<style>
+:root {
+  --bg: #fbfbfa;      --card: #fff;       --line: #e6e4df;
+  --ink: #1b1b1a;     --dim: #6f6d68;     --accent: #0059a8;
+  --open: #1a7f45;    --soon: #9a6208;    --shut: #8b8985;
+  --open-bg: #e7f4ec; --soon-bg: #fcf2df; --shut-bg: #f1f0ed;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171a;     --card: #1e2024;   --line: #2f3237;
+    --ink: #e9e8e4;    --dim: #9b9993;    --accent: #7fb6ee;
+    --open: #6ede9d;   --soon: #f0c46a;   --shut: #86847f;
+    --open-bg: #14301f; --soon-bg: #322612; --shut-bg: #26282c;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #fbfbfa; --card: #fff; --line: #e6e4df; --ink: #1b1b1a; --dim: #6f6d68;
+  --accent: #0059a8; --open: #1a7f45; --soon: #9a6208; --shut: #8b8985;
+  --open-bg: #e7f4ec; --soon-bg: #fcf2df; --shut-bg: #f1f0ed;
+}
+:root[data-theme="dark"] {
+  --bg: #16171a; --card: #1e2024; --line: #2f3237; --ink: #e9e8e4; --dim: #9b9993;
+  --accent: #7fb6ee; --open: #6ede9d; --soon: #f0c46a; --shut: #86847f;
+  --open-bg: #14301f; --soon-bg: #322612; --shut-bg: #26282c;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+header h1 { font-size: 1.5rem; margin: 0 0 .15rem; letter-spacing: -.02em; }
+header p { margin: 0; color: var(--dim); font-size: .875rem; }
+
+.banner {
+  margin: 1rem 0 0; padding: .7rem .9rem; border-radius: .5rem;
+  background: var(--soon-bg); color: var(--soon); font-size: .875rem;
+  border: 1px solid currentColor;
+}
+.banner.info { background: var(--shut-bg); color: var(--ink); border-color: var(--line); }
+.banner a { color: inherit; }
+
+.group { margin-top: 2rem; }
+.group > h2 {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--dim); margin: 0 0 .6rem; font-weight: 600;
+}
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: .7rem; padding: .9rem 1rem; margin-bottom: .6rem;
+}
+.card.open { border-left: 3px solid var(--open); }
+.card.opening { border-left: 3px solid var(--soon); }
+
+.top { display: flex; gap: .75rem; align-items: baseline; justify-content: space-between; }
+.name { font-weight: 600; font-size: 1.0625rem; letter-spacing: -.01em; }
+.name a { color: inherit; text-decoration: none; }
+.name a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+.pill {
+  flex: none; font-size: .75rem; font-weight: 600; white-space: nowrap;
+  padding: .2rem .5rem; border-radius: 1rem;
+  background: var(--shut-bg); color: var(--shut);
+}
+.pill.open { background: var(--open-bg); color: var(--open); }
+.pill.opening, .pill.closing { background: var(--soon-bg); color: var(--soon); }
+
+.detail { margin-top: .35rem; font-size: .8125rem; color: var(--dim); }
+.detail div + div { margin-top: .1rem; }
+
+details { margin-top: .7rem; }
+summary {
+  cursor: pointer; font-size: .8125rem; font-weight: 600; color: var(--accent);
+  list-style: none;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "▸ "; display: inline-block; transition: transform .15s; }
+details[open] summary::before { transform: rotate(90deg); }
+.meal { margin-top: .8rem; }
+.meal > h3 {
+  font-size: .8125rem; margin: 0 0 .3rem; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--dim);
+}
+.station { margin: 0 0 .5rem; }
+.station > strong { font-size: .8125rem; font-weight: 600; }
+.station ul { margin: .15rem 0 0; padding-left: 1.1rem; font-size: .875rem; }
+.station li { margin: .05rem 0; }
+.tag {
+  font-size: .6875rem; color: var(--dim); border: 1px solid var(--line);
+  border-radius: .25rem; padding: 0 .25rem; margin-left: .25rem;
+  white-space: nowrap;
+}
+
+footer { margin-top: 2.5rem; font-size: .75rem; color: var(--dim); }
+footer a { color: var(--accent); }
+#selftest { white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: .8125rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Columbia Dining</h1>
+    <p id="sub">Loading…</p>
+  </header>
+  <div id="banner"></div>
+  <main id="out"></main>
+  <footer>
+    Unofficial. Data scraped from <a href="https://dining.columbia.edu">dining.columbia.edu</a>;
+    hours and menus can change without notice — check there before you walk over.
+  </footer>
+</div>
+
+<script>
+const DAYS = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+
+/* --- New York "now", regardless of where the viewer's device thinks it is. --- */
+function nyNow(override) {
+  const instant = override ? new Date(override) : new Date();
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York', weekday: 'long', year: 'numeric', month: '2-digit',
+    day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(instant).map(x => [x.type, x.value]));
+  return {
+    instant: +instant,
+    weekday: p.weekday.toLowerCase(),
+    date: `${p.year}-${p.month}-${p.day}`,
+    hhmm: +p.hour % 24 * 100 + +p.minute,
+  };
+}
+
+/* Stored as UTC-naive, e.g. "2026-01-20T05:00:00" -> 2026-01-20T05:00:00Z. */
+const asUTC = s => Date.parse(s + 'Z');
+
+function hhmmText(t) {
+  t = ((t % 2400) + 2400) % 2400;
+  const h = Math.floor(t / 100), m = String(t % 100).padStart(2, '0');
+  return `${h % 12 || 12}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+}
+
+/* Port of the dining site's own getOpenStatus, with real times attached.
+   HHMM ints and the >=2400 wrap for overnight service are theirs; keeping the
+   arithmetic identical is the point, so we agree with the official site. */
+/* A break block is one that is in force but lists no hours on any weekday --
+   how Columbia encodes "Closed for Summer". Its date_to is the last covered
+   moment, so the day after it is when the place comes back. */
+const hasAnyHours = blk => (blk.days || []).some(
+  d => d && !Array.isArray(d) && Object.values(d).some(v => v && v.length));
+
+function reopenAfter(ms) {
+  // date_to sits at 23:59 (or midday) NY on the last closed day -> next day.
+  // Exactly midnight means the day itself is already the reopening.
+  return nyNow(new Date(ms)).hhmm === 0 ? ms : ms + 864e5;
+}
+
+const longDate = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York',
+  weekday: 'long', month: 'long', day: 'numeric' }).format(ms);
+// Cards repeat this a dozen times during a break, so they get the short form
+// and the banner up top carries the full weekday-and-date.
+const shortDate = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York',
+  month: 'short', day: 'numeric' }).format(ms);
+
+function statusOf(loc, now) {
+  const windows = [], notes = [], active = [];
+  for (const blk of loc.open_hours_fields || []) {
+    if ((blk.excluded || []).some(d => d.slice(0, 10) === now.date)) continue;
+    if (now.instant < asUTC(blk.date_from) || now.instant > asUTC(blk.date_to)) continue;
+    active.push(blk);
+    for (const d of blk.days || []) for (const h of d['days_' + now.weekday] || []) windows.push(h);
+    for (const t of blk.displayed_hours || []) if (t.title) notes.push(t.title);
+  }
+
+  if (active.length && !active.some(hasAnyHours)) {
+    const last = Math.max(...active.map(b => asUTC(b.date_to)));
+    // The site's own note ("Closed for Summer") is dropped here: the pill
+    // already says it, and the reopening date is the part nobody had before.
+    return { state: 'break', label: `Reopens ${shortDate(reopenAfter(last))}`,
+             reopens: reopenAfter(last), notes: [] };
+  }
+
+  const spans = windows.map(w => {
+    let from = +w.hours_from, to = +w.hours_to;
+    if (from >= to) { if (now.hhmm < from) from -= 2400; else to += 2400; }  // overnight
+    return { from, to };
+  }).sort((a, b) => a.from - b.from);
+
+  for (const s of spans) {
+    if (s.from <= now.hhmm && now.hhmm <= s.to) {
+      const closing = now.hhmm >= s.to - 100;
+      return { state: closing ? 'closing' : 'open',
+               label: closing ? `Closes ${hhmmText(s.to)}` : `Open until ${hhmmText(s.to)}`, notes };
+    }
+    if (now.hhmm < s.from) {
+      return { state: now.hhmm >= s.from - 100 ? 'opening' : 'closed',
+               label: `Opens ${hhmmText(s.from)}`, notes };
+    }
+  }
+  return { state: 'closed', label: spans.length ? 'Closed for today' : 'Closed', notes };
+}
+
+const RANK = { open: 0, closing: 1, opening: 2, closed: 3, break: 4 };
+const PILL = { open: 'Open', closing: 'Closing soon', opening: 'Opens soon',
+               closed: 'Closed', break: 'Closed for break' };
+
+/* --- rendering --- */
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => (
+  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function todaysMenus(data, loc, now) {
+  const dayStart = asUTC(now.date + 'T00:00:00'), dayEnd = dayStart + 864e5;
+  return data.menus
+    .filter(m => m.location_nids.includes(loc.nid))
+    .filter(m => asUTC(m.date_to) >= dayStart && asUTC(m.date_from) < dayEnd)
+    .sort((a, b) => asUTC(a.date_from) - asUTC(b.date_from));
+}
+
+function menuHTML(menus) {
+  if (!menus.length) return '';
+  const body = menus.map(m => `
+    <div class="meal">
+      <h3>${esc(m.meal || 'Menu')} · ${hhmmText(nyHHMM(m.date_from))}–${hhmmText(nyHHMM(m.date_to))}</h3>
+      ${m.stations.filter(s => s.items.length).map(s => `
+        <div class="station">
+          <strong>${esc(s.name || 'Other')}</strong>
+          <ul>${s.items.map(i => `<li>${esc(i.title)}${
+            (i.dietary || []).map(d => `<span class="tag">${esc(d)}</span>`).join('')
+          }</li>`).join('')}</ul>
+        </div>`).join('')}
+    </div>`).join('');
+  return `<details><summary>Today's menu</summary>${body}</details>`;
+}
+
+function nyHHMM(iso) {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York',
+    hour: '2-digit', minute: '2-digit', hour12: false }).format(asUTC(iso));
+  return +p.slice(0, 2) % 24 * 100 + +p.slice(3, 5);
+}
+
+function cardHTML(data, loc, now) {
+  const st = statusOf(loc, now);
+  const menus = todaysMenus(data, loc, now);
+  return `
+  <article class="card ${st.state}">
+    <div class="top">
+      <span class="name"><a href="${esc(loc.url)}" target="_blank" rel="noopener">${esc(loc.name)}</a></span>
+      <span class="pill ${st.state}">${PILL[st.state]}</span>
+    </div>
+    <div class="detail">
+      ${st.label === PILL[st.state] ? '' : `<div>${esc(st.label)}</div>`}
+      ${st.notes.map(n => `<div>${esc(n)}</div>`).join('')}
+    </div>
+    ${menuHTML(menus)}
+  </article>`;
+}
+
+function render(data) {
+  const params = new URLSearchParams(location.search);
+  const now = nyNow(params.get('now'));
+
+  // Nearly everything shut for the summer/winter break is the normal state for
+  // months at a time -- say so once at the top instead of leaving a wall of
+  // "Closed" for the reader to interpret.
+  const halls = data.locations.filter(l => l.type === 'dining_hall');
+  const onBreak = halls.map(l => statusOf(l, now)).filter(s => s.state === 'break');
+  if (halls.length && onBreak.length === halls.length) {
+    const back = Math.min(...onBreak.map(s => s.reopens));
+    document.getElementById('banner').innerHTML =
+      `<div class="banner info"><strong>Dining halls are closed for the break.</strong>
+       They reopen ${longDate(back)}. A few cafés stay open — see below.</div>`;
+  }
+
+  const age = Date.now() - Date.parse(data.updated_at);
+  const mins = Math.round(age / 6e4);
+  document.getElementById('sub').textContent =
+    `${new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long',
+      month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+      .format(now.instant)} · updated ${mins < 60 ? mins + 'm' : Math.round(mins / 60) + 'h'} ago`;
+
+  if (age > 6 * 3600e3) {
+    document.getElementById('banner').innerHTML +=
+      `<div class="banner">Data is ${Math.round(mins / 60)} hours old — the scraper may be broken.
+       Check <a href="https://dining.columbia.edu">dining.columbia.edu</a> directly.</div>`;
+  }
+
+  const out = [];
+  for (const [type, heading] of [['dining_hall', 'Dining halls'], ['retail', 'Cafés & retail']]) {
+    const list = data.locations.filter(l => l.type === type)
+      .sort((a, b) => RANK[statusOf(a, now).state] - RANK[statusOf(b, now).state]
+                   || a.name.localeCompare(b.name));
+    out.push(`<section class="group"><h2>${heading}</h2>
+      ${list.map(l => cardHTML(data, l, now)).join('')}</section>`);
+  }
+  document.getElementById('out').innerHTML = out.join('');
+}
+
+/* --- self-check: `?selftest` --- */
+function selftest() {
+  const results = [];
+  const ok = (name, cond) => results.push(`${cond ? 'PASS' : 'FAIL'}  ${name}`);
+  const loc = (from, to, extra = {}) => ({ open_hours_fields: [{
+    date_from: '2020-01-01T00:00:00', date_to: '2030-01-01T00:00:00',
+    days: [{ days_saturday: [{ hours_from: from, hours_to: to }] }], ...extra }] });
+  const at = t => nyNow(`2026-08-08T${t}:00-04:00`);   // a Saturday
+
+  ok('open mid-service',        statusOf(loc('0900', '2100'), at('12:00')).state === 'open');
+  ok('closing within the hour', statusOf(loc('0900', '2100'), at('20:30')).state === 'closing');
+  ok('opens soon',              statusOf(loc('0900', '2100'), at('08:30')).state === 'opening');
+  ok('closed before opening',   statusOf(loc('0900', '2100'), at('06:00')).state === 'closed');
+  ok('closed after last call',  statusOf(loc('0900', '2100'), at('22:00')).state === 'closed');
+  ok('label names the time',    statusOf(loc('0900', '2100'), at('12:00')).label === 'Open until 9:00 PM');
+
+  // JJ's Place runs noon -> 10am next day.
+  ok('overnight, after midnight', statusOf(loc('1200', '1000'), at('02:00')).state === 'open');
+  ok('overnight, before close',   statusOf(loc('1200', '1000'), at('23:00')).state === 'open');
+  ok('overnight, in the gap',     statusOf(loc('1200', '1000'), at('11:00')).state === 'closed');
+
+  ok('holiday exclusion wins',
+    statusOf(loc('0900', '2100', { excluded: ['2026-08-08'] }), at('12:00')).state === 'closed');
+  ok('out-of-season block ignored', statusOf({ open_hours_fields: [{
+    date_from: '2019-01-01T00:00:00', date_to: '2019-06-01T00:00:00',
+    days: [{ days_saturday: [{ hours_from: '0900', hours_to: '2100' }] }] }] },
+    at('12:00')).state === 'closed');
+  ok('no hours at all', statusOf({ open_hours_fields: [] }, at('12:00')).state === 'closed');
+  ok('12-hour formatting', hhmmText(0) === '12:00 AM' && hhmmText(1230) === '12:30 PM'
+                        && hhmmText(2530) === '1:30 AM');
+
+  // Break detection: a block in force that lists no hours on any weekday.
+  const summer = extra => ({ open_hours_fields: [{
+    date_from: '2026-05-20T04:00:00', date_to: '2026-08-26T03:59:00', days: [],
+    displayed_hours: [{ title: 'Closed for Summer' }], ...extra }] });
+  const s1 = statusOf(summer(), at('12:00'));
+  ok('break is its own state',    s1.state === 'break');
+  ok('break names the reopening', s1.label === 'Reopens Aug 26');
+  ok('break banner date is full', longDate(s1.reopens) === 'Wednesday, August 26');
+
+  // 23:59 and midday on the last closed day both mean "back tomorrow".
+  ok('midday end still rolls over', statusOf({ open_hours_fields: [{
+    date_from: '2026-05-20T04:00:00', date_to: '2026-08-25T15:59:00', days: [] }] },
+    at('12:00')).label === 'Reopens Aug 26');
+  // Midnight is already the reopening day, not the day before it.
+  ok('midnight end does not roll', statusOf({ open_hours_fields: [{
+    date_from: '2026-05-20T04:00:00', date_to: '2026-08-26T04:00:00', days: [] }] },
+    at('12:00')).label === 'Reopens Aug 26');
+
+  // Closed today but open other days is an ordinary closure, not a break.
+  ok('weekend closure is not a break',
+    statusOf({ open_hours_fields: [{ date_from: '2020-01-01T00:00:00',
+      date_to: '2030-01-01T00:00:00', days: [{ days_monday: [{ hours_from: '0800',
+      hours_to: '1400' }] }] }] }, at('12:00')).state === 'closed');
+
+  const failed = results.filter(r => r.startsWith('FAIL')).length;
+  document.body.innerHTML = `<div class="wrap"><h1>${failed ? failed + ' FAILED' : 'all passed'}</h1>
+    <pre id="selftest">${results.join('\n')}</pre></div>`;
+}
+
+if (new URLSearchParams(location.search).has('selftest')) {
+  selftest();
+} else {
+  fetch('dining.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(render)
+    .catch(e => {
+      document.getElementById('sub').textContent = 'Could not load dining data.';
+      document.getElementById('banner').innerHTML =
+        `<div class="banner">Failed to load <code>dining.json</code> (${esc(e)}).
+         Try <a href="https://dining.columbia.edu">dining.columbia.edu</a>.</div>`;
+    });
+}
+</script>
+</body>
+</html>

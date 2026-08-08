@@ -1,0 +1,1635 @@
+{
+ "updated_at": "2026-08-08T13:50:27-04:00",
+ "timezone_offset": -14400,
+ "locations": [
+  {
+   "nid": "56",
+   "name": "Blue Java Café - Butler Library",
+   "type": "retail",
+   "url": "https://dining.columbia.edu/content/blue-java-cafe-butler-library-0",
+   "description": "<p>Four convenient locations on campus offering fresh, fair trade, and organic coffee, along with a host of gourmet pastries, sandwiches, salads, and desserts. This location is on the ground floor of Butler Library.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "900",
+         "hours_to": "2100"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "0"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "900",
+         "hours_to": "2100"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "900",
+         "hours_to": "2100"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "0"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "0"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "0"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday - Thursday, 8 a.m. - 12 a.m."
+      },
+      {
+       "title": "Friday - Sunday, 9 a.m. - 9 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-21",
+      "2026-03-22",
+      "2026-03-13",
+      "2025-11-04",
+      "2026-01-25"
+     ]
+    },
+    {
+     "date_from": "2026-05-18T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Summer Hours"
+      },
+      {
+       "title": "Monday - Friday, 8 a.m. - 2 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-05-20",
+      "2026-05-22",
+      "2026-07-03"
+     ]
+    },
+    {
+     "date_from": "2026-07-03T04:00:00",
+     "date_to": "2026-07-04T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed July 3 for University Holiday"
+      }
+     ],
+     "excluded": [
+      "2026-05-04"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "60",
+   "name": "Blue Java Café - Uris",
+   "type": "retail",
+   "url": "https://dining.columbia.edu/content/blue-java-cafe-uris-hall",
+   "description": "<p>Blue Java Café in Uris features a variety of Brooklyn Roasting Company coffees, teas, sandwiches, soups, and pastries, in addition to specialty items such as Nitro Brew and products from our local partners in Harlem.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": "1340",
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:59",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1730"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1730"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1730"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1730"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1730"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday - Friday: 8:00 a.m. - 5:30 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-16",
+      "2024-03-14",
+      "2024-03-15",
+      "2024-03-16",
+      "2024-03-17",
+      "2024-04-30",
+      "2025-11-26",
+      "2025-11-27",
+      "2025-11-28",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-06-05T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Summer Hours"
+      },
+      {
+       "title": "Monday - Friday, 8 a.m. - 3 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-07-03"
+     ]
+    },
+    {
+     "date_from": "2026-07-03T04:00:00",
+     "date_to": "2026-07-04T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed July 3 for University Holiday"
+      }
+     ],
+     "excluded": [
+      "2026-06-30"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "57",
+   "name": "Blue Java Café at Chef Don's, Mudd Hall",
+   "type": "retail",
+   "url": "https://dining.columbia.edu/content/blue-java-cafe-mudd-hall-0",
+   "description": "<p>Four convenient locations on campus offering fresh, fair trade, and organic coffee, along with a host of gourmet pastries, sandwiches, salads, and desserts. Located on the first floor of the Engineering School's Mudd building.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-02T05:00:00",
+     "date_to": "2025-05-14T15:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday – Friday: 8 a.m. – 6 p.m.."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2025-11-27",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2025-03-21",
+      "2024-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2025-10-31",
+      "2025-11-03",
+      "2025-11-04"
+     ]
+    },
+    {
+     "date_from": "2026-05-16T04:00:01",
+     "date_to": "2026-08-26T03:59:59",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7482",
+   "name": "Blue Java at Everett Library Café",
+   "type": "retail",
+   "url": "https://dining.columbia.edu/content/blue-java-everett-library-cafe",
+   "description": "<p>Located in Teachers College, Blue Java at Everett Library Café features a variety of Brooklyn Roasting Company coffees, teas, sandwiches, soups, and pastries, in addition to specialty items such as Nitro Brew and products from our local partners in Harlem.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-16T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1430"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1930"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1930"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1930"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1930"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday - Thursday, 8:00 a.m. - 7:30 p.m."
+      },
+      {
+       "title": "Friday, 8:00 a.m. - 2:30 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-01-26",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-18T04:00:00",
+     "date_to": "2026-08-25T04:00:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1400"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Summer Hours"
+      },
+      {
+       "title": "Monday - Thursday, 8 a.m. - 3 p.m."
+      },
+      {
+       "title": "Friday, 8 a.m. - 12 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-07-03"
+     ]
+    },
+    {
+     "date_from": "2026-07-03T04:00:34",
+     "date_to": "2026-07-04T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed July 3 for University Holiday"
+      }
+     ],
+     "excluded": [
+      "2026-05-05"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "6990",
+   "name": "Chef Don's Pizza Pi featuring Blue Java",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu",
+   "description": "<p><strong>Located on the first floor of the Mudd Building, Chef Don's Pizza Pi is your go-to stop for pizza, toasted subs, breakfast sandwiches, and coffee on campus. </strong></p><p>Chef Don's Pizza Pi features a Blue Java cafe serving hot and cold coffee and espresso beverages, plus assorted pastries, snacks, and soup all day long. </p><p><em>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-14T18:00:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1800"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday – Friday: 8:00 a.m. – 6:00 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2025-04-24",
+      "2026-01-26",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:01",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "6907",
+   "name": "Chef Mike's Sub Shop",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/chef-mikes",
+   "description": "<p>This location offers a set number of items in exchange for a meal swipe, or payable by Dining Dollars, Flex, or credit card. One meal includes a sub, hand fruit, dessert, chips, and beverage (cold brew or freestyle).</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": "1339",
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:59",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "2200"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "2200"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1900"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "2200"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "2200"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "2200"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Friday, 10:30 a.m. - 10 p.m."
+      },
+      {
+       "title": "Open Saturday, 11 a.m. - 7 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-21"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-05-16T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "1030",
+         "hours_to": "1500"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closing Early for Summer"
+      },
+      {
+       "title": "Open 10:30 a.m. to 3 p.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-05-16T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ],
+     "excluded": [
+      "2026-03-10"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7351",
+   "name": "Faculty House 2nd Floor",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/faculty-house-2nd-floor-0",
+   "description": "<p>Known for its delightful lunch featuring globally inspired cuisine, Faculty House emphasizes regionally grown and locally sourced ingredients. Student dining is open on the 2nd Floor for breakfast, lunch, and dinner.</p><p>At breakfast, for one swipe pick 4 items to get your day going: Coffee, OJ, breakfast sandwich, oatmeal, yogurt parfait, or fruit cup. </p><p>Lunch and dinner feature a main dish, pasta, a vegan entrée, plus a starch, veggie, salad, fruit and dessert! Click each menu below for details.</p><p>Faculty House accepts Dining Plan swipes, Dining Dollars and Flex Dollars. </p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T12:30:00",
+     "date_to": "2026-05-07T15:00:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "730",
+         "hours_to": "1100"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "730",
+         "hours_to": "1100"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "730",
+         "hours_to": "1100"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "730",
+         "hours_to": "1100"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open for Breakfast Monday - Thursday 7:30 a.m. - 11:00 a.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-01-20T16:00:00",
+     "date_to": "2026-05-07T18:30:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open for Lunch Monday - Thursday, 11:00 a.m. - 2:30 p.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-03-30T21:00:00",
+     "date_to": "2026-05-08T01:00:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1700",
+         "hours_to": "2100"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1700",
+         "hours_to": "2100"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1700",
+         "hours_to": "2100"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1700",
+         "hours_to": "2100"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Thursday for Dinner from 5:00 p.m. - 9:00 p.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-05-08T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7850",
+   "name": "Faculty House 4th Floor",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/faculty-house-4th-floor-skyline-room",
+   "description": "<p>Faculty House's 4th Floor (the Skyline Room) will be open for student dining for lunch. The Fac Shack menu will be served buffet-style, with some variations. Use your Columbia Dining Plan swipe, Flex, or Dining Dollars. Barnard Exchange is also accepted.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T16:00:00",
+     "date_to": "2026-05-07T18:30:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1430"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open for Lunch Monday - Thursday from 11:00 a.m. - 2:30 p.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-05-08T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "12",
+   "name": "Ferris Booth Commons",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/ferris-booth-commons-0",
+   "description": "<p>Located on the 3rd floor of Alfred Lerner Hall, Ferris serves custom order omelettes, pasta, quesadillas, and salad, as well other daily offerings of pizza, soup, menu specials, and delectable desserts. </p><p>Food service is continuous during operation, with specific meal items served during the following times:</p><ul><li>Breakfast: 7:30 a.m. - 11:00 a.m.</li><li>Lunch: 11:00 a.m. - 5:00 p.m.</li><li>Dinner: 5:00 p.m. - Closing</li></ul><p><strong>Vegan Station</strong></p><ul><li>Lunch: 11:00 a.m. - 3:00 p.m.</li><li>Dinner: 5:00 p.m. - Closing</li><li><em>Closed from 3:00 p.m. to 5:00 p.m.</em></li></ul><p><strong>Main Line:</strong></p><ul><li>Brunch: Opening - 2:00 p.m.</li><li>Dinner:  5:00 p.m. - Closing</li><li><em>Closed from 2:00 p.m. to 5:00 p.m.</em></li></ul><p><strong>Omelette</strong>: Opening -11:00 a.m.</p><p><strong>Pasta/Quesadilla/Rice Bowl Bar: </strong>11:30 a.m. - Closing</p><p><strong>Action Station:</strong></p><ul><li>Lunch: 11:00 a.m. - 4:00 p.m.</li><li>Dinner: 5:00 p.m. - Closing</li><li><em>Closed from 4:00 p.m. to 5:00 p.m.</em></li></ul><p><strong>Desserts and Soups</strong>: Opens at 11:00 a.m.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": "835",
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-16T02:59:59",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "730",
+         "hours_to": "2000"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "730",
+         "hours_to": "2000"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "900",
+         "hours_to": "2000"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "1000",
+         "hours_to": "1400"
+        },
+        {
+         "hours_from": "1600",
+         "hours_to": "2000"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "730",
+         "hours_to": "2000"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "730",
+         "hours_to": "2000"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "730",
+         "hours_to": "2000"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Friday, 7:30 a.m. - 8:00 p.m."
+      },
+      {
+       "title": "Open Saturday, 9:00 a.m. - 8:00 p.m."
+      },
+      {
+       "title": "Open Sunday, 10:00 a.m. - 2:00 p.m., 4:00 - 8:00 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-21",
+      "2025-03-22",
+      "2026-03-20"
+     ]
+    },
+    {
+     "date_from": "2026-05-16T04:00:25",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ],
+     "excluded": [
+      "2025-12-12"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7355",
+   "name": "Grace Dodge Dining Hall",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/grace-dodge-dining-hall-0",
+   "description": "<p>Located in the lower level of Grace Dodge Hall at Teachers College, this location offers a set number of items in exchange for a meal swipe, or payable by Dining Dollars, Flex, or credit card. </p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p><h2>Here's the Deal</h2><p>For one meal swipe, or payable by Dining Dollars, Flex, or credit card, you get an entree from the salad station, hot station, or grill, plus a hand fruit, dessert, and beverage (hot coffee or freestyle machine). </p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-14T03:59:59",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1930"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1930"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1930"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1930"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Thursday, 11 a.m. - 7:30 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2025-12-02",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    },
+    {
+     "date_from": "2026-05-14T04:00:00",
+     "date_to": "2026-05-15T03:59:00",
+     "days": [
+      {
+       "days_thursday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1400"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closing Early for Summer"
+      },
+      {
+       "title": "Open 11 a.m. - 2 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-05-07"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "11",
+   "name": "JJ's Place",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/jjs-place-0",
+   "description": "<p>JJ’s Place is the casual and comfortable weekend and late-night destination serving burgers and other specialty sandwiches plus fries, smoothies, wings, and more. Located in the lower level of John Jay Hall.</p><h2>JJ's Take 4</h2><p>Need to restock the snacks in your room, or want to grab some goodies for later? Use an extra meal swipe and take 4 items from the shelves by the cashier station in JJ's. Items include granola bars, nuts, pop tarts, hot and cold cereal cups, chips, yogurt, and more.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": "839",
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T15:00:00",
+     "date_to": "2026-05-14T15:59:59",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "1000"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open daily 12:00 p.m. - 10:00 a.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-25",
+      "2026-03-21"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-08-25T15:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ],
+     "excluded": [
+      "2026-05-04"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "10",
+   "name": "John Jay Dining Hall",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/john-jay-dining-hall",
+   "description": "<p>Just like home food favorites, made fresh daily. Special orders at the grill or features at the hot entrée station, plus pasta, international fusions, house-made soups, smoothies, and rotating Chef features. Kosher to-go counter at the main entrance. Located in John Jay on the first floor.</p><p>Food service is continuous during operational hours, with specific meal items served at the following times:</p><ul><li><strong>Breakfast:</strong> 9:30 a.m. - 11:00 a.m., with breakfast items available at the grill until 2:00 p.m.</li><li><strong>Lunch: </strong>11:00 a.m. - 2:30 p.m., with Pasta, Bao, Action, Soup and Salad Stations open until 5:00 p.m.</li><li><strong>Dinner:</strong> 5:00 p.m. - close</li></ul><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": "840",
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:59",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "930",
+         "hours_to": "2100"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "930",
+         "hours_to": "2100"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "930",
+         "hours_to": "2100"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "930",
+         "hours_to": "2100"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "930",
+         "hours_to": "2100"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Sunday - Thursday: 9:30 a.m. – 9:00 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-15",
+      "2026-03-21",
+      "2026-04-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-16T04:00:00",
+     "date_to": "2026-05-20T03:59:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1000",
+         "hours_to": "1400"
+        },
+        {
+         "hours_from": "1600",
+         "hours_to": "1900"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "1000",
+         "hours_to": "1400"
+        },
+        {
+         "hours_from": "1600",
+         "hours_to": "1900"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "1000",
+         "hours_to": "1400"
+        },
+        {
+         "hours_from": "1600",
+         "hours_to": "1900"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1000",
+         "hours_to": "1400"
+        },
+        {
+         "hours_from": "1600",
+         "hours_to": "1900"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open for Senior Sendoff"
+      },
+      {
+       "title": "May 16-19, 10 a.m. - 2 p.m. & 4 p.m. - 7 p.m."
+      }
+     ],
+     "excluded": [
+      "2025-12-17"
+     ]
+    },
+    {
+     "date_from": "2026-05-20T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ],
+     "excluded": [
+      "2026-05-04"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "9727",
+   "name": "Johnny's Food Truck",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/johnnys",
+   "description": "<p>Brought to you by the culinary team at John Jay: come get your bowl on at Johnny’s, serving lunch and dinner at the John Jay Gate! </p><h3>Here’s the Deal </h3><p>For one meal swipe, you get: </p><ul><li>One traditional or vegan entrée bowl (lunch) or burrito (dinner)</li><li>One piece of fruit</li><li>One dessert</li><li>Gluten-free options available by request<br> </li></ul><p><em>A water station will be available at the truck. Bring your own reusable bottle or grab a compostable to-go cup with your meal. </em></p><p><em>Hours may vary for inclement weather and academic breaks. Check the website for daily updates. </em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1500"
+        },
+        {
+         "hours_from": "1900",
+         "hours_to": "2300"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1500"
+        }
+       ],
+       "days_saturday": [
+        {
+         "hours_from": "1900",
+         "hours_to": "2300"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "1800",
+         "hours_to": "2200"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1500"
+        },
+        {
+         "hours_from": "1900",
+         "hours_to": "2300"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1500"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1100",
+         "hours_to": "1500"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Wednesday, 11 a.m. - 3 p.m."
+      },
+      {
+       "title": "Open Thursday - Friday, 11 a.m. - 3 p.m. & 7 p.m. - 11 p.m."
+      },
+      {
+       "title": "Open Saturday, 7 p.m. - 11 p.m."
+      },
+      {
+       "title": "Open Sunday, 6 p.m. - 10 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-12",
+      "2026-03-13",
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-21",
+      "2026-03-22",
+      "2026-03-26",
+      "2026-04-10"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ],
+     "excluded": [
+      "2025-10-28"
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "58",
+   "name": "Lenfest Café",
+   "type": "retail",
+   "url": "https://dining.columbia.edu/content/lenfest-cafe-0",
+   "description": "<p>A coffee bar and quick grab-and-go dining option offering packaged deli sandwiches, flatbread pizzas, chef-prepared sushi, and daily specials for lunch. Located on the second floor of Columbia Law School, in Jerome Greene Hall.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T05:00:00",
+     "date_to": "2026-05-15T03:59:59",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1500"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1830"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1830"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1830"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1830"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Monday - Thursday: 8:00 a.m. - 6:30 p.m."
+      },
+      {
+       "title": "Friday: 8:00 a.m. - 3:00 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-13",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-16",
+      "2024-03-15",
+      "2024-03-16",
+      "2024-03-17",
+      "2025-11-26",
+      "2025-11-27",
+      "2025-11-28",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-08-26T03:59:59",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7452",
+   "name": "Robert F. Smith Dining Hall",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/robert-f-smith-dining-hall-0",
+   "description": "<p>Located in the Henry R. Kravis Hall at Columbia Business School, the Robert F. Smith Dining Hall is the go-to eatery for business school students, staff, and faculty.</p><p>Open Monday – Thursday, 8:00 a.m. – 4:30 p.m.,  Friday 8:00 a.m. - 4:00 p.m. with food service available at the following times:</p><ul><li>Continental breakfast: 8:00 a.m. – 11:00 a.m.</li><li>Lunch: 11:00 a.m. – 2:00 p.m.</li><li>Snacks & grab-and-go items: 2:00 p.m. – 4:00/4:30 p.m.</li><li>Coffee bar: all day</li></ul><p><em>This location does not accept Columbia Dining meal swipes. Payment is by Flex or credit card only</em>.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-12T05:00:00",
+     "date_to": "2026-05-09T03:59:00",
+     "days": [
+      {
+       "days_friday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1600"
+        }
+       ],
+       "days_monday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1630"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1630"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1630"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "800",
+         "hours_to": "1630"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday – Thursday, 8 a.m. – 4:30 p.m."
+      },
+      {
+       "title": "Open Friday, 8 a.m. – 4 p.m."
+      }
+     ],
+     "excluded": [
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-02-23"
+     ]
+    },
+    {
+     "date_from": "2026-05-09T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nid": "7487",
+   "name": "The Fac Shack",
+   "type": "dining_hall",
+   "url": "https://dining.columbia.edu/content/fac-shack-0",
+   "description": "<p>Located in the Wien Courtyard, the Fac Shack food truck is a convenient, grab-and-go lunch option on east campus. This location offers a set number of items in exchange for a meal swipe, or payable by Dining Dollars, Flex, or credit card. Lunch includes an entrée, hand fruit, dessert, and water (refill station).</p><p><strong>New, Spring 2026:</strong> You asked for more variety at Fac Shack, and we hear you. This spring semester, Fac Shack will embark on a culinary <a href=\"/news/fac-shack-goes-global-and-fourth-floor-dining-opens-faculty-house\" data-entity-type=\"node\" data-entity-uuid=\"8e7a87bc-b355-4dc0-9a77-1cbf469b2cd7\" data-entity-substitution=\"canonical\">World Tour</a>, featuring a new global cuisine each week! The rotating menu will spotlight dishes from around the world, giving students something new to look forward to every time they stop by.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
+   "crowd_id": null,
+   "open_hours_fields": [
+    {
+     "date_from": "2026-01-20T06:00:00",
+     "date_to": "2026-05-15T00:00:00",
+     "days": [
+      {
+       "days_monday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "2000"
+        }
+       ],
+       "days_sunday": [
+        {
+         "hours_from": "1500",
+         "hours_to": "2000"
+        }
+       ],
+       "days_thursday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "2000"
+        }
+       ],
+       "days_tuesday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "2000"
+        }
+       ],
+       "days_wednesday": [
+        {
+         "hours_from": "1200",
+         "hours_to": "2000"
+        }
+       ]
+      }
+     ],
+     "displayed_hours": [
+      {
+       "title": "Open Monday - Thursday, 12 p.m. - 8 p.m. & Sunday, 3 - 8 p.m."
+      }
+     ]
+    },
+    {
+     "date_from": "2026-05-15T04:00:00",
+     "date_to": "2026-08-26T03:59:00",
+     "days": [
+      []
+     ],
+     "displayed_hours": [
+      {
+       "title": "Closed for Summer"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "menus": []
+}

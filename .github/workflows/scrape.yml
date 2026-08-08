@@ -1,0 +1,44 @@
+name: scrape
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"   # every 30 min; GitHub may delay this by 5-20 min
+  workflow_dispatch:
+
+# Only one scrape at a time -- two runs pushing to main would collide.
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+      - run: playwright install --with-deps chromium
+
+      # Fails loudly rather than writing a partial dining.json.
+      - run: python scrape.py
+
+      # Runs against the payload we just captured, so a markup change on
+      # Columbia's side fails the job instead of publishing empty data.
+      - run: pytest -q
+
+      - name: Commit
+        run: |
+          git config user.name  "dining-scraper"
+          git config user.email "actions@github.com"
+          git add dining.json fixtures/globals.json
+          git diff --cached --quiet && echo "no change" && exit 0
+          git commit -m "data: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push
