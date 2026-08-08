@@ -55,7 +55,7 @@ body {
 
 /* ---------- masthead ---------- */
 .mast { display: flex; align-items: center; gap: .6rem; }
-.crown { width: 1.5rem; height: 1rem; flex: none; fill: var(--brass); }
+.crown { height: 1.65rem; width: auto; flex: none; fill: var(--brass); }
 .mast h1 { font-size: 1.3rem; margin: 0; line-height: 1.1; }
 .stamp {
   margin: .55rem 0 0; font-size: .75rem; color: var(--dim);
@@ -96,6 +96,11 @@ body {
   letter-spacing: .04em; hyphens: none; overflow-wrap: normal;
 }
 .row.shut .rname { color: var(--dim); }
+/* Group divider inside the ribbon: label in the name gutter, rule across the
+   time axis, so both groups keep sharing one clock. */
+.row.glab { min-height: 1.5rem; }
+.row.glab .rname { font-size: .5625rem; letter-spacing: .15em; color: var(--dim); }
+.gline { flex: 1; height: 1px; background: var(--stone); }
 /* Three-hour gridlines, matching the ticks above -- enough to read a bar
    against, not so much that the empty track becomes texture. */
 .track {
@@ -192,8 +197,18 @@ footer a { color: var(--blue-deep); }
 <div class="wrap">
   <header>
     <div class="mast">
-      <svg class="crown" viewBox="0 0 24 16" aria-hidden="true">
-        <path d="M1.5 15V3.2l5 4.3L12 1l5.5 6.5 5-4.3V15z"/>
+      <!-- The King's Crown: drawn here rather than lifted from Columbia's
+           trademarked files, since this is an unofficial student page. Base
+           band, two leaf-pierced wings, stem, orb, cross. -->
+      <svg class="crown" viewBox="0 0 52 32" aria-hidden="true">
+        <path d="M2 26.6h48v4.8H2z"/>
+        <path d="M2.4 4.6C1.6 10.6 2.4 19.6 2.9 25h21C19.8 14.4 11.4 7.4 2.4 4.6z
+                 M6.6 22.2c-1.8-4-1.6-9 .6-10.8 2.8-2.2 7.6.8 10.8 6 2 3 2.4 5 1 5.2-3 .4-11 0-12.4-.4z"/>
+        <path d="M49.6 4.6c.8 6 0 15-.5 20.4h-21C32.2 14.4 40.6 7.4 49.6 4.6z
+                 M45.4 22.2c1.8-4 1.6-9-.6-10.8-2.8-2.2-7.6.8-10.8 6-2 3-2.4 5-1 5.2 3 .4 11 0 12.4-.4z"/>
+        <path d="M24 25c.2-6.2.7-11.4 1.2-14.6h1.6c.5 3.2 1 8.4 1.2 14.6z"/>
+        <circle cx="26" cy="9" r="3.8"/>
+        <path d="M25.1.4h1.8v8.6h-1.8z"/><path d="M21.6 1.8h8.8v2h-8.8z"/>
       </svg>
       <h1 class="carved">Columbia Dining</h1>
     </div>
@@ -344,12 +359,12 @@ const DIAL_FROM = 6 * 60, DIAL_TO = 26 * 60;
 const pct = m => (Math.min(Math.max(m, DIAL_FROM), DIAL_TO) - DIAL_FROM)
                  / (DIAL_TO - DIAL_FROM) * 100;
 
-function dialHTML(rows, now) {
+function dialHTML(groups, now) {
   const ticks = [6, 9, 12, 15, 18, 21, 24].map(h =>
     `<span style="left:${pct(h * 60)}%">${h === 24 ? '12a' : h === 12 ? '12p'
       : h > 12 ? (h - 12) + 'p' : h + 'a'}</span>`).join('');
 
-  const body = rows.map(({ loc, spans, st }) => {
+  const rowHTML = ({ loc, spans, st }) => {
     const bars = spans.map(s => {
       const l = pct(mins(s.from)), r = pct(mins(s.to));
       const spill = mins(s.to) > DIAL_TO ? ' spill' : '';
@@ -364,7 +379,14 @@ function dialHTML(rows, now) {
       <span class="rname carved">${esc(shortName(loc.name))}</span>
       <div class="track" role="img" aria-label="${esc(shortName(loc.name))}: ${esc(readable)}">${bars}</div>
     </div>`;
-  }).join('');
+  };
+
+  // Both groups share one time axis -- splitting the dial in two would make
+  // the day harder to read, which is the whole point of it.
+  const shown = groups.filter(g => g.rows.length);
+  const body = shown.map(g => (shown.length > 1
+    ? `<div class="row glab"><span class="rname carved">${esc(g.label)}</span><div class="gline"></div></div>`
+    : '') + g.rows.map(rowHTML).join('')).join('');
 
   const at = pct(mins(now.hhmm));
   const inView = mins(now.hhmm) >= DIAL_FROM && mins(now.hhmm) <= DIAL_TO;
@@ -470,16 +492,23 @@ function render(data) {
   }
   document.getElementById('banner').innerHTML = banner.join('');
 
-  const serving = marked.filter(r => r.spans.length)
-    .sort((a, b) => a.spans[0].from - b.spans[0].from || a.loc.name.localeCompare(b.loc.name));
+  // Short labels in the ribbon gutter, full ones over the card sections.
+  const GROUPS = [['dining_hall', 'Dining halls', 'Dining halls'],
+                  ['retail', 'Cafés & retail', 'Cafés']];
   const out = [];
-  out.push(serving.length ? dialHTML(serving, now)
+
+  const serving = GROUPS.map(([type, , label]) => ({ label, rows: marked
+    .filter(r => r.loc.type === type && r.spans.length)
+    .sort((a, b) => a.spans[0].from - b.spans[0].from || a.loc.name.localeCompare(b.loc.name)) }));
+  out.push(serving.some(g => g.rows.length) ? dialHTML(serving, now)
     : `<div class="banner quiet">Nothing is serving anywhere today.</div>`);
 
-  const listed = marked.slice()
-    .sort((a, b) => RANK[a.st.state] - RANK[b.st.state] || a.loc.name.localeCompare(b.loc.name));
-  out.push(`<section class="list"><h2>Every location</h2>
-    ${listed.map(r => cardHTML(data, r.loc, now, r.st, r.spans)).join('')}</section>`);
+  for (const [type, label] of GROUPS) {
+    const rows = marked.filter(r => r.loc.type === type)
+      .sort((a, b) => RANK[a.st.state] - RANK[b.st.state] || a.loc.name.localeCompare(b.loc.name));
+    out.push(`<section class="list"><h2>${label}</h2>
+      ${rows.map(r => cardHTML(data, r.loc, now, r.st, r.spans)).join('')}</section>`);
+  }
   document.getElementById('out').innerHTML = out.join('');
 }
 
