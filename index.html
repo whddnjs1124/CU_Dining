@@ -4,127 +4,213 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Columbia Dining — what's open now</title>
-<meta name="description" content="Every Columbia dining hall and café on one page: open now, closing time, and today's menu.">
+<meta name="description" content="Every Columbia dining hall and café on one page: who's serving right now, until when, and what's on today.">
 <style>
+/* Columbia's own materials, not the usual collegiate navy:
+   Pantone 290 "Columbia Blue" is pale, and McKim's limestone is warm-white.
+   Brass appears exactly once, on the sundial line that marks now. */
 :root {
-  --bg: #fbfbfa;      --card: #fff;       --line: #e6e4df;
-  --ink: #1b1b1a;     --dim: #6f6d68;     --accent: #0059a8;
-  --open: #1a7f45;    --soon: #9a6208;    --shut: #8b8985;
-  --open-bg: #e7f4ec; --soon-bg: #fcf2df; --shut-bg: #f1f0ed;
+  --paper:#fbfaf7; --card:#ffffff; --stone:#e4e0d6; --hair:#eeebe3;
+  --ink:#14161a;   --dim:#6b6963;  --blue:#b9d9eb;  --blue-deep:#005587;
+  --brass:#9a7b3f; --shut:#8b8985;
+  --open-bg:#eaf4fa; --soon-bg:#fbf3e4;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #16171a;     --card: #1e2024;   --line: #2f3237;
-    --ink: #e9e8e4;    --dim: #9b9993;    --accent: #7fb6ee;
-    --open: #6ede9d;   --soon: #f0c46a;   --shut: #86847f;
-    --open-bg: #14301f; --soon-bg: #322612; --shut-bg: #26282c;
+    --paper:#101215; --card:#171a1e; --stone:#2a2e33; --hair:#23272c;
+    --ink:#e9e8e4;   --dim:#96948e;  --blue:#b9d9eb;  --blue-deep:#8dc6ea;
+    --brass:#d7b26a; --shut:#84827d;
+    --open-bg:#15242e; --soon-bg:#2b2313;
   }
 }
 :root[data-theme="light"] {
-  --bg: #fbfbfa; --card: #fff; --line: #e6e4df; --ink: #1b1b1a; --dim: #6f6d68;
-  --accent: #0059a8; --open: #1a7f45; --soon: #9a6208; --shut: #8b8985;
-  --open-bg: #e7f4ec; --soon-bg: #fcf2df; --shut-bg: #f1f0ed;
+  --paper:#fbfaf7; --card:#ffffff; --stone:#e4e0d6; --hair:#eeebe3;
+  --ink:#14161a; --dim:#6b6963; --blue:#b9d9eb; --blue-deep:#005587;
+  --brass:#9a7b3f; --shut:#8b8985; --open-bg:#eaf4fa; --soon-bg:#fbf3e4;
 }
 :root[data-theme="dark"] {
-  --bg: #16171a; --card: #1e2024; --line: #2f3237; --ink: #e9e8e4; --dim: #9b9993;
-  --accent: #7fb6ee; --open: #6ede9d; --soon: #f0c46a; --shut: #86847f;
-  --open-bg: #14301f; --soon-bg: #322612; --shut-bg: #26282c;
+  --paper:#101215; --card:#171a1e; --stone:#2a2e33; --hair:#23272c;
+  --ink:#e9e8e4; --dim:#96948e; --blue:#b9d9eb; --blue-deep:#8dc6ea;
+  --brass:#d7b26a; --shut:#84827d; --open-bg:#15242e; --soon-bg:#2b2313;
 }
 
-* { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
 body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-text-size-adjust: 100%;
 }
-.wrap { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+.wrap { max-width: 48rem; margin: 0 auto; padding: 2rem 1.15rem 4rem; }
 
-header h1 { font-size: 1.5rem; margin: 0 0 .15rem; letter-spacing: -.02em; }
-header p { margin: 0; color: var(--dim); font-size: .875rem; }
+/* Carved caps: Georgia and its cousins are the most chiselled faces every
+   machine already has, so the masthead costs zero requests. */
+.carved {
+  font-family: "Iowan Old Style", Georgia, "Palatino Linotype", Palatino, serif;
+  text-transform: uppercase; letter-spacing: .16em; font-weight: 400;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- masthead ---------- */
+.mast { display: flex; align-items: center; gap: .6rem; }
+.crown { width: 1.5rem; height: 1rem; flex: none; fill: var(--brass); }
+.mast h1 { font-size: 1.3rem; margin: 0; line-height: 1.1; }
+.stamp {
+  margin: .55rem 0 0; font-size: .75rem; color: var(--dim);
+  letter-spacing: .04em;
+}
+.rule { height: 1px; background: var(--stone); margin: 1.1rem 0 0; }
 
 .banner {
-  margin: 1rem 0 0; padding: .7rem .9rem; border-radius: .5rem;
-  background: var(--soon-bg); color: var(--soon); font-size: .875rem;
-  border: 1px solid currentColor;
+  margin: 1.15rem 0 0; padding: .75rem .9rem; border-radius: .35rem;
+  font-size: .875rem; background: var(--soon-bg); color: var(--ink);
+  border-left: 2px solid var(--brass);
 }
-.banner.info { background: var(--shut-bg); color: var(--ink); border-color: var(--line); }
-.banner a { color: inherit; }
+.banner.quiet { background: transparent; border-left-color: var(--stone); color: var(--dim); }
+.banner strong { color: var(--ink); }
+.banner a { color: var(--blue-deep); }
 
-.group { margin-top: 2rem; }
-.group > h2 {
-  font-size: .75rem; text-transform: uppercase; letter-spacing: .09em;
-  color: var(--dim); margin: 0 0 .6rem; font-weight: 600;
+/* ---------- the ribbon: a sundial for the dining day ---------- */
+.dial { margin: 1.6rem 0 0; position: relative; }
+.dial h2, .list h2 {
+  font-size: .6875rem; letter-spacing: .18em; color: var(--dim);
+  margin: 0 0 .8rem; font-weight: 600; text-transform: uppercase;
+}
+.grid { position: relative; }
+.ticks {
+  display: flex; margin-left: var(--gutter); position: relative;
+  height: 1rem; font-size: .625rem; color: var(--dim);
+}
+.ticks span { position: absolute; transform: translateX(-50%); letter-spacing: .06em; }
+.dial { --gutter: 6.25rem; }
+@media (max-width: 24rem) { .dial { --gutter: 5rem; } }
+
+/* Fixed row height keeps the bars evenly spaced whether a name takes one
+   line or two; shortName() is responsible for never needing three. */
+.row { display: flex; align-items: center; gap: 0; min-height: 1.9rem; }
+.rname {
+  width: var(--gutter); flex: none; padding-right: .6rem; font-size: .625rem;
+  line-height: 1.15; text-align: right; color: var(--ink);
+  letter-spacing: .04em; hyphens: none; overflow-wrap: normal;
+}
+.row.shut .rname { color: var(--dim); }
+/* Three-hour gridlines, matching the ticks above -- enough to read a bar
+   against, not so much that the empty track becomes texture. */
+.track {
+  position: relative; flex: 1; height: 1.15rem; border-radius: .1rem;
+  background: repeating-linear-gradient(90deg,
+    var(--hair) 0 1px, transparent 1px calc(100% / 6.667));
+}
+.bar {
+  position: absolute; top: 0; bottom: 0; background: var(--blue);
+  border-radius: .1rem; transform-origin: left center; overflow: hidden;
+}
+/* The sundial's shadow: the part of a service window already spent. */
+.bar i {
+  position: absolute; inset: 0 auto 0 0; display: block;
+  background: var(--spent);
+}
+:root { --spent: rgba(20,22,26,.13); }
+@media (prefers-color-scheme: dark) { :root { --spent: rgba(0,0,0,.42); } }
+:root[data-theme="light"] { --spent: rgba(20,22,26,.13); }
+:root[data-theme="dark"] { --spent: rgba(0,0,0,.42); }
+/* Service that runs past the window edge, e.g. JJ's Place until 10am. */
+.bar.spill { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+.now {
+  position: absolute; top: 1rem; bottom: 1.1rem; width: 2px; background: var(--brass);
+  pointer-events: none;
+}
+.now::before {
+  content: ""; position: absolute; top: -5px; left: 50%; width: 0; height: 0;
+  transform: translateX(-50%);
+  border-left: 4.5px solid transparent; border-right: 4.5px solid transparent;
+  border-top: 7px solid var(--brass);
+}
+/* Sits under the last row, clear of the hour ticks it would otherwise sit on. */
+.nowlab {
+  position: absolute; bottom: -1rem; font-size: .5625rem; color: var(--brass);
+  letter-spacing: .12em; transform: translateX(-50%); white-space: nowrap;
+}
+.grid { padding-bottom: 1.1rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .bar { animation: draw .5s cubic-bezier(.2,.7,.3,1) backwards; }
+  .now, .nowlab { animation: fade .4s .45s backwards; }
+  @keyframes draw { from { transform: scaleX(0); } }
+  @keyframes fade { from { opacity: 0; } }
 }
 
+/* ---------- location list ---------- */
+.list { margin-top: 2.4rem; }
 .card {
-  background: var(--card); border: 1px solid var(--line);
-  border-radius: .7rem; padding: .9rem 1rem; margin-bottom: .6rem;
+  background: var(--card); border: 1px solid var(--hair);
+  border-radius: .4rem; padding: .85rem 1rem; margin-bottom: .5rem;
 }
-.card.open { border-left: 3px solid var(--open); }
-.card.opening { border-left: 3px solid var(--soon); }
+.card.open, .card.closing { border-left: 2px solid var(--blue-deep); }
+.card.opening { border-left: 2px solid var(--brass); }
 
 .top { display: flex; gap: .75rem; align-items: baseline; justify-content: space-between; }
-.name { font-weight: 600; font-size: 1.0625rem; letter-spacing: -.01em; }
+.name { font-size: .75rem; letter-spacing: .07em; }
 .name a { color: inherit; text-decoration: none; }
-.name a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+.name a:hover { text-decoration: underline; text-underline-offset: .2em; }
+.pill { flex: none; font-size: .6875rem; letter-spacing: .04em; color: var(--shut); white-space: nowrap; }
+.pill.open, .pill.closing { color: var(--blue-deep); font-weight: 600; }
+.pill.opening { color: var(--brass); font-weight: 600; }
 
-.pill {
-  flex: none; font-size: .75rem; font-weight: 600; white-space: nowrap;
-  padding: .2rem .5rem; border-radius: 1rem;
-  background: var(--shut-bg); color: var(--shut);
-}
-.pill.open { background: var(--open-bg); color: var(--open); }
-.pill.opening, .pill.closing { background: var(--soon-bg); color: var(--soon); }
+.detail { margin-top: .3rem; font-size: .8125rem; color: var(--dim); }
+.detail div + div { margin-top: .05rem; }
+.detail .lead { color: var(--ink); }
 
-.detail { margin-top: .35rem; font-size: .8125rem; color: var(--dim); }
-.detail div + div { margin-top: .1rem; }
-
-details { margin-top: .7rem; }
-summary {
-  cursor: pointer; font-size: .8125rem; font-weight: 600; color: var(--accent);
-  list-style: none;
-}
+details { margin-top: .65rem; }
+summary { cursor: pointer; font-size: .75rem; letter-spacing: .08em; color: var(--blue-deep); list-style: none; }
 summary::-webkit-details-marker { display: none; }
-summary::before { content: "▸ "; display: inline-block; transition: transform .15s; }
-details[open] summary::before { transform: rotate(90deg); }
-.meal { margin-top: .8rem; }
-.meal > h3 {
-  font-size: .8125rem; margin: 0 0 .3rem; letter-spacing: .03em;
-  text-transform: uppercase; color: var(--dim);
-}
-.station { margin: 0 0 .5rem; }
-.station > strong { font-size: .8125rem; font-weight: 600; }
-.station ul { margin: .15rem 0 0; padding-left: 1.1rem; font-size: .875rem; }
-.station li { margin: .05rem 0; }
+summary::before { content: "+ "; }
+details[open] summary::before { content: "\2212 "; }
+.meal { margin-top: .85rem; }
+.meal > h3 { font-size: .6875rem; letter-spacing: .14em; margin: 0 0 .35rem; color: var(--dim); text-transform: uppercase; }
+.station { margin: 0 0 .55rem; }
+.station > strong { font-size: .75rem; letter-spacing: .06em; font-weight: 600; }
+.station ul { margin: .1rem 0 0; padding-left: 1rem; font-size: .875rem; }
 .tag {
-  font-size: .6875rem; color: var(--dim); border: 1px solid var(--line);
-  border-radius: .25rem; padding: 0 .25rem; margin-left: .25rem;
-  white-space: nowrap;
+  font-size: .625rem; letter-spacing: .05em; color: var(--dim);
+  border: 1px solid var(--stone); border-radius: .15rem; padding: 0 .25rem;
+  margin-left: .3rem; white-space: nowrap;
 }
 
-footer { margin-top: 2.5rem; font-size: .75rem; color: var(--dim); }
-footer a { color: var(--accent); }
-#selftest { white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: .8125rem; }
+a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--brass); outline-offset: 2px; border-radius: .1rem;
+}
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--stone);
+  font-size: .75rem; color: var(--dim); }
+footer a { color: var(--blue-deep); }
+#selftest { white-space: pre-wrap; font-size: .8125rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Columbia Dining</h1>
-    <p id="sub">Loading…</p>
+    <div class="mast">
+      <svg class="crown" viewBox="0 0 24 16" aria-hidden="true">
+        <path d="M1.5 15V3.2l5 4.3L12 1l5.5 6.5 5-4.3V15z"/>
+      </svg>
+      <h1 class="carved">Columbia Dining</h1>
+    </div>
+    <p class="stamp mono" id="stamp">Loading…</p>
+    <div class="rule"></div>
   </header>
   <div id="banner"></div>
   <main id="out"></main>
   <footer>
-    Unofficial. Data scraped from <a href="https://dining.columbia.edu">dining.columbia.edu</a>;
-    hours and menus can change without notice — check there before you walk over.
+    Unofficial, and built by a student. Hours and menus come from
+    <a href="https://dining.columbia.edu">dining.columbia.edu</a> and can change
+    without notice — check there before you walk over.
   </footer>
 </div>
 
 <script>
-const DAYS = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-
-/* --- New York "now", regardless of where the viewer's device thinks it is. --- */
+/* New York "now", regardless of where the viewer's device thinks it is. */
 function nyNow(override) {
   const instant = override ? new Date(override) : new Date();
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
@@ -141,6 +227,7 @@ function nyNow(override) {
 
 /* Stored as UTC-naive, e.g. "2026-01-20T05:00:00" -> 2026-01-20T05:00:00Z. */
 const asUTC = s => Date.parse(s + 'Z');
+const mins = t => Math.floor(t / 100) * 60 + t % 100;
 
 function hhmmText(t) {
   t = ((t % 2400) + 2400) % 2400;
@@ -148,11 +235,8 @@ function hhmmText(t) {
   return `${h % 12 || 12}:${m} ${h < 12 ? 'AM' : 'PM'}`;
 }
 
-/* Port of the dining site's own getOpenStatus, with real times attached.
-   HHMM ints and the >=2400 wrap for overnight service are theirs; keeping the
-   arithmetic identical is the point, so we agree with the official site. */
-/* A break block is one that is in force but lists no hours on any weekday --
-   how Columbia encodes "Closed for Summer". Its date_to is the last covered
+/* A break block is one in force that lists no hours on any weekday -- how
+   Columbia encodes "Closed for Summer". Its date_to is the last covered
    moment, so the day after it is when the place comes back. */
 const hasAnyHours = blk => (blk.days || []).some(
   d => d && !Array.isArray(d) && Object.values(d).some(v => v && v.length));
@@ -170,6 +254,9 @@ const longDate = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New
 const shortDate = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York',
   month: 'short', day: 'numeric' }).format(ms);
 
+/* Port of the dining site's own getOpenStatus, with real times attached.
+   HHMM ints and the >=2400 wrap for overnight service are theirs; keeping the
+   arithmetic identical is the point, so we agree with the official site. */
 function statusOf(loc, now) {
   const windows = [], notes = [], active = [];
   for (const blk of loc.open_hours_fields || []) {
@@ -181,9 +268,9 @@ function statusOf(loc, now) {
   }
 
   if (active.length && !active.some(hasAnyHours)) {
-    const last = Math.max(...active.map(b => asUTC(b.date_to)));
     // The site's own note ("Closed for Summer") is dropped here: the pill
     // already says it, and the reopening date is the part nobody had before.
+    const last = Math.max(...active.map(b => asUTC(b.date_to)));
     return { state: 'break', label: `Reopens ${shortDate(reopenAfter(last))}`,
              reopens: reopenAfter(last), notes: [] };
   }
@@ -208,13 +295,89 @@ function statusOf(loc, now) {
   return { state: 'closed', label: spans.length ? 'Closed for today' : 'Closed', notes };
 }
 
+/* Display-only spans for the ribbon: the whole day laid out, independent of
+   what time it is now (statusOf's wrap is relative to now and would distort
+   the drawing). */
+function daySpans(loc, now) {
+  const out = [];
+  for (const blk of loc.open_hours_fields || []) {
+    if ((blk.excluded || []).some(d => d.slice(0, 10) === now.date)) continue;
+    if (now.instant < asUTC(blk.date_from) || now.instant > asUTC(blk.date_to)) continue;
+    for (const d of blk.days || []) for (const h of d['days_' + now.weekday] || []) {
+      const from = +h.hours_from;
+      let to = +h.hours_to;
+      if (to <= from) to += 2400;   // runs past midnight
+      out.push({ from, to });
+    }
+  }
+  return out.sort((a, b) => a.from - b.from);
+}
+
 const RANK = { open: 0, closing: 1, opening: 2, closed: 3, break: 4 };
 const PILL = { open: 'Open', closing: 'Closing soon', opening: 'Opens soon',
                closed: 'Closed', break: 'Closed for break' };
 
+/* Ribbon rows need names that never run past two lines in the gutter, or the
+   bars stop lining up. Rules rather than a lookup table, so a location
+   Columbia adds later still shortens sensibly. */
+const shortName = n => n
+  .replace(/^Blue Java (Caf[ée] )?(at |- )?/, '')
+  .replace(/^Chef Don's Pizza Pi.*/, 'Pizza Pi')
+  .replace(/ featuring Blue Java$/, '')
+  .replace(/, Mudd Hall$/, '')
+  .replace(/ Dining Hall$/, '')
+  .replace(/ Booth Commons$/, '')
+  .replace(/ Library( Caf[ée])?$/, '')
+  .replace(/ (Sub Shop|Food Truck)$/, '')
+  .replace(/^Faculty House /, 'Fac House ')
+  .replace(/ (\d+)(?:st|nd|rd|th) Floor$/, ' $1F')
+  .replace(/ Caf[ée]$/, '')
+  .replace(/^The /, '')
+  .trim();
+
 /* --- rendering --- */
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// 6am to 2am covers every service Columbia runs, including JJ's overnight.
+const DIAL_FROM = 6 * 60, DIAL_TO = 26 * 60;
+const pct = m => (Math.min(Math.max(m, DIAL_FROM), DIAL_TO) - DIAL_FROM)
+                 / (DIAL_TO - DIAL_FROM) * 100;
+
+function dialHTML(rows, now) {
+  const ticks = [6, 9, 12, 15, 18, 21, 24].map(h =>
+    `<span style="left:${pct(h * 60)}%">${h === 24 ? '12a' : h === 12 ? '12p'
+      : h > 12 ? (h - 12) + 'p' : h + 'a'}</span>`).join('');
+
+  const body = rows.map(({ loc, spans, st }) => {
+    const bars = spans.map(s => {
+      const l = pct(mins(s.from)), r = pct(mins(s.to));
+      const spill = mins(s.to) > DIAL_TO ? ' spill' : '';
+      // Fraction of this window already behind us -- drawn as shadow.
+      const spent = Math.min(Math.max(
+        (mins(now.hhmm) - mins(s.from)) / (mins(s.to) - mins(s.from)), 0), 1) * 100;
+      return `<div class="bar${spill}" style="left:${l}%;width:${Math.max(r - l, .8)}%">${
+        spent > 0 ? `<i style="width:${spent}%"></i>` : ''}</div>`;
+    }).join('');
+    const readable = spans.map(s => `${hhmmText(s.from)} to ${hhmmText(s.to)}`).join(', ');
+    return `<div class="row${st.state === 'open' || st.state === 'closing' ? '' : ' shut'}">
+      <span class="rname carved">${esc(shortName(loc.name))}</span>
+      <div class="track" role="img" aria-label="${esc(shortName(loc.name))}: ${esc(readable)}">${bars}</div>
+    </div>`;
+  }).join('');
+
+  const at = pct(mins(now.hhmm));
+  const inView = mins(now.hhmm) >= DIAL_FROM && mins(now.hhmm) <= DIAL_TO;
+  const marker = inView
+    ? `<div class="now" style="left:calc(var(--gutter) + ${at}% * (100% - var(--gutter)) / 100%)"></div>
+       <div class="nowlab mono" style="left:calc(var(--gutter) + ${at}% * (100% - var(--gutter)) / 100%)">NOW</div>`
+    : '';
+
+  return `<section class="dial">
+    <h2>Today's service</h2>
+    <div class="grid"><div class="ticks">${ticks}</div>${body}${marker}</div>
+  </section>`;
+}
 
 function todaysMenus(data, loc, now) {
   const dayStart = asUTC(now.date + 'T00:00:00'), dayEnd = dayStart + 864e5;
@@ -224,11 +387,18 @@ function todaysMenus(data, loc, now) {
     .sort((a, b) => asUTC(a.date_from) - asUTC(b.date_from));
 }
 
+function nyHHMM(iso) {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York',
+    hour: '2-digit', minute: '2-digit', hour12: false }).format(asUTC(iso));
+  return +p.slice(0, 2) % 24 * 100 + +p.slice(3, 5);
+}
+
 function menuHTML(menus) {
   if (!menus.length) return '';
   const body = menus.map(m => `
     <div class="meal">
-      <h3>${esc(m.meal || 'Menu')} · ${hhmmText(nyHHMM(m.date_from))}–${hhmmText(nyHHMM(m.date_to))}</h3>
+      <h3 class="carved">${esc(m.meal || 'Menu')} <span class="mono">${
+        hhmmText(nyHHMM(m.date_from))}–${hhmmText(nyHHMM(m.date_to))}</span></h3>
       ${m.stations.filter(s => s.items.length).map(s => `
         <div class="station">
           <strong>${esc(s.name || 'Other')}</strong>
@@ -237,29 +407,33 @@ function menuHTML(menus) {
           }</li>`).join('')}</ul>
         </div>`).join('')}
     </div>`).join('');
-  return `<details><summary>Today's menu</summary>${body}</details>`;
+  return `<details><summary class="carved">Today's menu</summary>${body}</details>`;
 }
 
-function nyHHMM(iso) {
-  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York',
-    hour: '2-digit', minute: '2-digit', hour12: false }).format(asUTC(iso));
-  return +p.slice(0, 2) % 24 * 100 + +p.slice(3, 5);
-}
+function cardHTML(data, loc, now, st, spans) {
+  // Columbia's prose hours sometimes disagree with their own structured ones
+  // (Everett reads "8 a.m. - 3 p.m." while the data says 14:00). Showing both
+  // makes this page look wrong, so once we can state today's windows from the
+  // same numbers the status came from, those are what we print. The prose is
+  // kept only when there is nothing to compute.
+  const second = spans.length
+    ? (spans.length > 1 || st.state === 'closed'
+        ? `<div class="mono">Today ${spans.map(s =>
+             `${hhmmText(s.from)}–${hhmmText(s.to)}`).join(', ')}</div>`
+        : '')
+    : st.notes.map(n => `<div>${esc(n)}</div>`).join('');
 
-function cardHTML(data, loc, now) {
-  const st = statusOf(loc, now);
-  const menus = todaysMenus(data, loc, now);
   return `
   <article class="card ${st.state}">
     <div class="top">
-      <span class="name"><a href="${esc(loc.url)}" target="_blank" rel="noopener">${esc(loc.name)}</a></span>
+      <span class="name carved"><a href="${esc(loc.url)}" target="_blank" rel="noopener">${esc(loc.name)}</a></span>
       <span class="pill ${st.state}">${PILL[st.state]}</span>
     </div>
     <div class="detail">
-      ${st.label === PILL[st.state] ? '' : `<div>${esc(st.label)}</div>`}
-      ${st.notes.map(n => `<div>${esc(n)}</div>`).join('')}
+      ${st.label === PILL[st.state] ? '' : `<div class="lead mono">${esc(st.label)}</div>`}
+      ${second}
     </div>
-    ${menuHTML(menus)}
+    ${menuHTML(todaysMenus(data, loc, now))}
   </article>`;
 }
 
@@ -267,39 +441,45 @@ function render(data) {
   const params = new URLSearchParams(location.search);
   const now = nyNow(params.get('now'));
 
-  // Nearly everything shut for the summer/winter break is the normal state for
-  // months at a time -- say so once at the top instead of leaving a wall of
-  // "Closed" for the reader to interpret.
-  const halls = data.locations.filter(l => l.type === 'dining_hall');
-  const onBreak = halls.map(l => statusOf(l, now)).filter(s => s.state === 'break');
-  if (halls.length && onBreak.length === halls.length) {
-    const back = Math.min(...onBreak.map(s => s.reopens));
-    document.getElementById('banner').innerHTML =
-      `<div class="banner info"><strong>Dining halls are closed for the break.</strong>
-       They reopen ${longDate(back)}. A few cafés stay open — see below.</div>`;
-  }
-
   const age = Date.now() - Date.parse(data.updated_at);
-  const mins = Math.round(age / 6e4);
-  document.getElementById('sub').textContent =
-    `${new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long',
-      month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
-      .format(now.instant)} · updated ${mins < 60 ? mins + 'm' : Math.round(mins / 60) + 'h'} ago`;
+  const m = Math.round(age / 6e4);
+  document.getElementById('stamp').textContent =
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long',
+      month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+      .format(now.instant).toUpperCase()
+    + ` · UPDATED ${m < 60 ? m + 'M' : Math.round(m / 60) + 'H'} AGO`;
 
+  const marked = data.locations.map(loc => ({ loc, st: statusOf(loc, now),
+                                              spans: daySpans(loc, now) }));
+
+  // Nearly everything shut for a break is the normal state for months at a
+  // time. Say it once, and keep those rows out of the ribbon -- eleven empty
+  // tracks is noise, not information.
+  const halls = marked.filter(r => r.loc.type === 'dining_hall');
+  const onBreak = halls.filter(r => r.st.state === 'break');
+  const banner = [];
+  if (halls.length && onBreak.length === halls.length) {
+    const back = Math.min(...onBreak.map(r => r.st.reopens));
+    banner.push(`<div class="banner"><strong>The dining halls are closed for the break.</strong>
+      They reopen ${longDate(back)}. A few cafés are still serving.</div>`);
+  }
   if (age > 6 * 3600e3) {
-    document.getElementById('banner').innerHTML +=
-      `<div class="banner">Data is ${Math.round(mins / 60)} hours old — the scraper may be broken.
-       Check <a href="https://dining.columbia.edu">dining.columbia.edu</a> directly.</div>`;
+    banner.push(`<div class="banner">This page last reached Columbia
+      ${Math.round(m / 60)} hours ago, so the hours below may be out of date.
+      Check <a href="https://dining.columbia.edu">dining.columbia.edu</a>.</div>`);
   }
+  document.getElementById('banner').innerHTML = banner.join('');
 
+  const serving = marked.filter(r => r.spans.length)
+    .sort((a, b) => a.spans[0].from - b.spans[0].from || a.loc.name.localeCompare(b.loc.name));
   const out = [];
-  for (const [type, heading] of [['dining_hall', 'Dining halls'], ['retail', 'Cafés & retail']]) {
-    const list = data.locations.filter(l => l.type === type)
-      .sort((a, b) => RANK[statusOf(a, now).state] - RANK[statusOf(b, now).state]
-                   || a.name.localeCompare(b.name));
-    out.push(`<section class="group"><h2>${heading}</h2>
-      ${list.map(l => cardHTML(data, l, now)).join('')}</section>`);
-  }
+  out.push(serving.length ? dialHTML(serving, now)
+    : `<div class="banner quiet">Nothing is serving anywhere today.</div>`);
+
+  const listed = marked.slice()
+    .sort((a, b) => RANK[a.st.state] - RANK[b.st.state] || a.loc.name.localeCompare(b.loc.name));
+  out.push(`<section class="list"><h2>Every location</h2>
+    ${listed.map(r => cardHTML(data, r.loc, now, r.st, r.spans)).join('')}</section>`);
   document.getElementById('out').innerHTML = out.join('');
 }
 
@@ -358,9 +538,41 @@ function selftest() {
       date_to: '2030-01-01T00:00:00', days: [{ days_monday: [{ hours_from: '0800',
       hours_to: '1400' }] }] }] }, at('12:00')).state === 'closed');
 
+  // Ribbon geometry: spans are drawn for the whole day, not relative to now.
+  const ds = daySpans(loc('1200', '1000'), at('02:00'));
+  ok('overnight span is drawn whole', ds.length === 1 && ds[0].from === 1200 && ds[0].to === 3400);
+  ok('dial maps 6am to the left edge',  pct(mins(600)) === 0);
+  ok('dial maps 2am to the right edge', pct(mins(2600)) === 100);
+  ok('dial clamps a spill',             pct(mins(3400)) === 100);
+  ok('dial puts noon at 30%',           Math.round(pct(mins(1200))) === 30);
+
+  const shortNames = {
+    'Blue Java Café - Butler Library': 'Butler',
+    'Blue Java at Everett Library Café': 'Everett',
+    "Blue Java Café at Chef Don's, Mudd Hall": "Chef Don's",
+    'Blue Java Café - Uris': 'Uris',
+    "Chef Don's Pizza Pi featuring Blue Java": 'Pizza Pi',
+    'John Jay Dining Hall': 'John Jay',
+    'Ferris Booth Commons': 'Ferris',
+    'The Fac Shack': 'Fac Shack',
+    "Chef Mike's Sub Shop": "Chef Mike's",
+    "Johnny's Food Truck": "Johnny's",
+    'Faculty House 2nd Floor': 'Fac House 2F',
+    'Faculty House 4th Floor': 'Fac House 4F',
+    'Robert F. Smith Dining Hall': 'Robert F. Smith',
+    'Lenfest Café': 'Lenfest',
+    "JJ's Place": "JJ's Place",
+  };
+  ok('no ribbon name needs three lines',
+    Object.values(shortNames).every(s => s.split(' ').length <= 3));
+  for (const [full, want] of Object.entries(shortNames)) {
+    ok(`short name: ${full}`, shortName(full) === want);
+  }
+
   const failed = results.filter(r => r.startsWith('FAIL')).length;
-  document.body.innerHTML = `<div class="wrap"><h1>${failed ? failed + ' FAILED' : 'all passed'}</h1>
-    <pre id="selftest">${results.join('\n')}</pre></div>`;
+  document.body.innerHTML = `<div class="wrap"><h1 class="carved">${
+    failed ? failed + ' failed' : 'all passed'}</h1>
+    <pre id="selftest" class="mono">${results.join('\n')}</pre></div>`;
 }
 
 if (new URLSearchParams(location.search).has('selftest')) {
@@ -370,10 +582,10 @@ if (new URLSearchParams(location.search).has('selftest')) {
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(render)
     .catch(e => {
-      document.getElementById('sub').textContent = 'Could not load dining data.';
+      document.getElementById('stamp').textContent = 'COULD NOT REACH THE DATA';
       document.getElementById('banner').innerHTML =
-        `<div class="banner">Failed to load <code>dining.json</code> (${esc(e)}).
-         Try <a href="https://dining.columbia.edu">dining.columbia.edu</a>.</div>`;
+        `<div class="banner">This page could not load <code>dining.json</code> (${esc(e)}).
+         Go to <a href="https://dining.columbia.edu">dining.columbia.edu</a> instead.</div>`;
     });
 }
 </script>
