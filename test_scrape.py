@@ -45,19 +45,47 @@ def test_halls_and_retail_are_both_present(live):
     assert types == {"dining_hall", "retail"}
 
 
-def test_partial_scrape_is_rejected(live):
+def test_collapsed_scrape_is_rejected(live):
     data = build(live)
     data["locations"] = data["locations"][:5]
     with pytest.raises(SystemExit):
         check(data)
 
 
-def test_hours_only_scrape_is_rejected(live):
+def test_scrape_with_no_hours_anywhere_is_rejected(live):
     data = build(live)
     for loc in data["locations"]:
         loc["open_hours_fields"] = []
     with pytest.raises(SystemExit):
         check(data)
+
+
+def test_a_retired_location_does_not_wedge_the_scraper(live):
+    """Columbia closing one café must not stop every future scrape.
+
+    A floor tied to the previous run's count would reject 15 forever: the
+    rejection means nothing is written, so the next run compares against 16
+    again and also fails. Nobody would notice until the stale banner appeared.
+    """
+    data = build(live)
+    data["locations"] = data["locations"][:-1]
+    check(data)
+
+
+def test_everything_closed_is_a_valid_scrape(live):
+    """Every location shut is the normal state for months at a time.
+
+    Over summer and winter break Columbia closes the halls but keeps their
+    hours blocks in place. Validation counts locations and hours blocks, never
+    whether anything is open -- turning this into an open-for-business check
+    would silently freeze the site every break.
+    """
+    data = build(live)
+    for loc in data["locations"]:
+        for block in loc["open_hours_fields"]:
+            block["days"] = []
+            block["displayed_hours"] = [{"title": "Closed for Summer"}]
+    check(data)
 
 
 # menu_data is empty over summer break (Fall menus start 2026-09-04), so the

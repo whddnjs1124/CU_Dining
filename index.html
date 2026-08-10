@@ -337,15 +337,23 @@ const shortName = n => n
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-// 6am to 2am covers every service Columbia runs, including JJ's overnight.
-const DIAL_FROM = 6 * 60, DIAL_TO = 26 * 60;
+/* The dining day runs 6am to 6am, not midnight to midnight: JJ's Place serves
+   until 10am and students look it up at 2am. statusOf() already works this
+   way (that is what its 2400 wraparound is for) -- the dial has to agree, or
+   the hero goes blank exactly during the late-night hours it is most needed. */
+const DIAL_FROM = 6 * 60, DIAL_TO = 30 * 60;
 const pct = m => (Math.min(Math.max(m, DIAL_FROM), DIAL_TO) - DIAL_FROM)
                  / (DIAL_TO - DIAL_FROM) * 100;
+// Before 6am we are still in the previous day's dial, at hour 24+.
+const dialHHMM = hhmm => hhmm < 600 ? hhmm + 2400 : hhmm;
 
 function dialHTML(groups, now) {
-  const ticks = [6, 9, 12, 15, 18, 21, 24].map(h =>
-    `<span style="left:${pct(h * 60)}%">${h === 24 ? '12a' : h === 12 ? '12p'
-      : h > 12 ? (h - 12) + 'p' : h + 'a'}</span>`).join('');
+  const tick = h => {
+    const t = h % 24;
+    return t === 0 ? '12a' : t === 12 ? '12p' : t > 12 ? (t - 12) + 'p' : t + 'a';
+  };
+  const ticks = [6, 9, 12, 15, 18, 21, 24, 27].map(h =>
+    `<span style="left:${pct(h * 60)}%">${tick(h)}</span>`).join('');
 
   const rowHTML = ({ loc, spans, st }) => {
     const bars = spans.map(s => {
@@ -353,7 +361,7 @@ function dialHTML(groups, now) {
       const spill = mins(s.to) > DIAL_TO ? ' spill' : '';
       // Fraction of this window already behind us -- drawn as shadow.
       const spent = Math.min(Math.max(
-        (mins(now.hhmm) - mins(s.from)) / (mins(s.to) - mins(s.from)), 0), 1) * 100;
+        (mins(dialHHMM(now.hhmm)) - mins(s.from)) / (mins(s.to) - mins(s.from)), 0), 1) * 100;
       return `<div class="bar${spill}" style="left:${l}%;width:${Math.max(r - l, .8)}%">${
         spent > 0 ? `<i style="width:${spent}%"></i>` : ''}</div>`;
     }).join('');
@@ -371,12 +379,12 @@ function dialHTML(groups, now) {
     ? `<div class="row glab"><span class="rname carved">${esc(g.label)}</span><div class="gline"></div></div>`
     : '') + g.rows.map(rowHTML).join('')).join('');
 
-  const at = pct(mins(now.hhmm));
-  const inView = mins(now.hhmm) >= DIAL_FROM && mins(now.hhmm) <= DIAL_TO;
-  const marker = inView
-    ? `<div class="now" style="left:calc(var(--gutter) + ${at}% * (100% - var(--gutter)) / 100%)"></div>
-       <div class="nowlab mono" style="left:calc(var(--gutter) + ${at}% * (100% - var(--gutter)) / 100%)">NOW</div>`
-    : '';
+  // The 6am-to-6am window covers every wall-clock time, so the marker always
+  // has somewhere to sit.
+  const at = pct(mins(dialHHMM(now.hhmm)));
+  const pos = `left:calc(var(--gutter) + ${at}% * (100% - var(--gutter)) / 100%)`;
+  const marker = `<div class="now" style="${pos}"></div>
+       <div class="nowlab mono" style="${pos}">NOW</div>`;
 
   return `<section class="dial">
     <h2>Today's service</h2>
@@ -554,9 +562,22 @@ function selftest() {
   const ds = daySpans(loc('1200', '1000'), at('02:00'));
   ok('overnight span is drawn whole', ds.length === 1 && ds[0].from === 1200 && ds[0].to === 3400);
   ok('dial maps 6am to the left edge',  pct(mins(600)) === 0);
-  ok('dial maps 2am to the right edge', pct(mins(2600)) === 100);
+  ok('dial maps 6am next day to the right edge', pct(mins(3000)) === 100);
   ok('dial clamps a spill',             pct(mins(3400)) === 100);
-  ok('dial puts noon at 30%',           Math.round(pct(mins(1200))) === 30);
+  ok('dial puts noon at 25%',           Math.round(pct(mins(1200))) === 25);
+
+  // Late night: the dial's day is 6am-to-6am, so 2am belongs to the dial that
+  // started yesterday morning and sits near its right edge, not off the left.
+  ok('2am shifts into the previous dial', dialHHMM(200) === 2600);
+  ok('noon does not shift',               dialHHMM(1200) === 1200);
+  ok('2am is inside the dial',            pct(mins(dialHHMM(200))) > 80
+                                       && pct(mins(dialHHMM(200))) < 100);
+  ok('5:59am is still inside',            pct(mins(dialHHMM(559))) < 100);
+  ok('6am wraps to the left edge',        pct(mins(dialHHMM(600))) === 0);
+  // At 2am, JJ's overnight bar must contain the marker and be partly shadowed.
+  const jj = daySpans(loc('1200', '1000'), at('02:00'))[0];
+  const spent = (mins(dialHHMM(200)) - mins(jj.from)) / (mins(jj.to) - mins(jj.from));
+  ok('2am falls inside the overnight bar', spent > 0 && spent < 1);
 
   const shortNames = {
     'Blue Java Café - Butler Library': 'Butler',

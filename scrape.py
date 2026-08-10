@@ -27,6 +27,9 @@ FIXTURES = ROOT / "fixtures"
 NY = ZoneInfo("America/New_York")
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+# Columbia lists 16. Well below that means the payload broke, not that a café
+# closed; well above any plausible shrinkage so a real closure never wedges us.
+MIN_LOCATIONS = 8
 
 # Locations that serve meals; everything else is coffee/retail with hours only.
 DINING_HALLS = {
@@ -134,15 +137,26 @@ def build(raw):
 
 
 def check(data):
-    """Refuse to publish a partial scrape. Stale-but-correct beats half-right."""
+    """Refuse to publish a broken scrape. Stale-but-correct beats half-right.
+
+    Deliberately a fixed floor rather than a ratchet against the last run. A
+    ratchet reads stricter but wedges permanently the first time Columbia
+    retires a location: 16 -> 15 would fail, and because the failure means we
+    never write, every later scrape compares against 16 too and also fails.
+    The payload arrives as one JSON blob, so "half the locations parsed" is
+    not a real failure mode anyway -- what we are catching is a blob that
+    stopped arriving or stopped being what we think it is.
+
+    Note what is NOT checked: whether anything is actually open. Every
+    location closed is normal for months at a time over summer and winter
+    break, and Columbia keeps the hours blocks in place while closed. Do not
+    "improve" this into an open-for-business check -- see test_scrape.py.
+    """
     n = len(data["locations"])
-    floor = 16
-    if OUT.exists():
-        floor = max(floor, len(json.loads(OUT.read_text())["locations"]))
-    if n < floor:
-        sys.exit(f"scrape looks partial: {n} locations, expected >= {floor}. Not writing.")
+    if n < MIN_LOCATIONS:
+        sys.exit(f"only {n} locations, expected at least {MIN_LOCATIONS}. Not writing.")
     if not any(l["open_hours_fields"] for l in data["locations"]):
-        sys.exit("no location has any hours. Not writing.")
+        sys.exit("no location carries any hours block at all. Not writing.")
 
 
 def recon(url):
