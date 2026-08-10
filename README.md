@@ -1,5 +1,7 @@
 # Columbia Dining
 
+**[whddnjs1124.github.io/CU_Dining](https://whddnjs1124.github.io/CU_Dining/)**
+
 Every Columbia dining hall and café on one page: who's serving right now, until
 when, and what's on today. Built because answering "where can I eat?" meant
 opening four pages on dining.columbia.edu.
