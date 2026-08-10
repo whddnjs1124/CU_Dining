@@ -134,6 +134,46 @@ def test_menu_windows_flatten_with_names_resolved():
     assert w["stations"][0]["items"][1]["dietary"] == ["Vegan", "Gluten Free"]
 
 
+# The committed dining.json is what the site actually serves, so it is worth
+# checking directly -- a bad hand-edit or a half-written file would otherwise
+# only show up as a blank page.
+@pytest.fixture
+def published():
+    return json.loads((Path(__file__).parent / "dining.json").read_text())
+
+
+def test_published_json_has_the_shape_the_page_expects(published):
+    assert published["locations"] and isinstance(published["menus"], list)
+    for loc in published["locations"]:
+        assert loc["nid"].isdigit()
+        assert loc["type"] in ("dining_hall", "retail")
+        assert loc["name"] and loc["url"].startswith("https://dining.columbia.edu")
+        for block in loc["open_hours_fields"]:
+            assert "date_from" in block and "date_to" in block
+
+
+def test_published_timestamp_is_new_york(published):
+    assert published["updated_at"].endswith(("-04:00", "-05:00"))
+
+
+def test_published_hours_are_four_digit_clock_times(published):
+    for loc in published["locations"]:
+        for block in loc["open_hours_fields"]:
+            for day in block.get("days", []):
+                if not isinstance(day, dict):
+                    continue          # empty list is how a break block looks
+                for windows in day.values():
+                    for w in windows:
+                        for key in ("hours_from", "hours_to"):
+                            assert w[key].isdigit() and len(w[key]) <= 4, w
+
+
+def test_published_menus_point_at_real_locations(published):
+    nids = {l["nid"] for l in published["locations"]}
+    for menu in published["menus"]:
+        assert set(menu["location_nids"]) <= nids
+
+
 def test_unknown_meal_fields_do_not_crash():
     menus = [{"locations": ["840"], "date_range_fields": [{
         "date_from": "x", "date_to": "y", "menu_type": [],

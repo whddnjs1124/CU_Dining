@@ -9,8 +9,10 @@ Columbia Dining 대시보드. dining.columbia.edu를 30분마다 스크레이핑
 ```
 index.html                  앱 전체 (HTML + CSS + JS 인라인, 빌드 없음)
 dining.json                 스크레이퍼 산출물, 커밋됨
+og.png                      링크 미리보기 카드. 실제 페이지 스크린샷이다
 scrape.py                   Playwright 스크레이퍼 (+ --recon 모드)
-test_scrape.py              파서 회귀 검증
+test_scrape.py              파서 + 발행된 dining.json 검증
+test_frontend.py            헤드리스 브라우저로 실제 페이지 구동
 fixtures/globals.json       마지막으로 캡처한 원본 페이로드 (스크레이프마다 갱신)
 .github/workflows/scrape.yml
 ```
@@ -29,7 +31,7 @@ DOM을 파싱하지 않는다. 모든 dining 페이지가 **인라인 JS 전역�
 
 ## 규칙
 
-**의존성을 늘리지 않는다.** 프론트는 프레임워크·번들러·CDN 스크립트·웹폰트 없이 `index.html` 한 파일이다. Python 쪽은 `playwright`, `beautifulsoup4`, `pytest`가 전부. 새 패키지를 추가하려면 그게 없으면 못 하는 일인지 먼저 따져볼 것.
+**의존성을 늘리지 않는다.** 프론트는 프레임워크·번들러·CDN 스크립트·웹폰트 없이 `index.html` 한 파일이다. Python 쪽은 `playwright`와 `pytest`뿐이다(HTML을 파싱하지 않으니 `beautifulsoup4`는 필요 없었다). 새 패키지를 추가하려면 그게 없으면 못 하는 일인지 먼저 따져볼 것.
 
 **디자인은 해시계다.** 자세한 건 `docs/HLD.md`의 디자인 절. 요약: 황동색은 NOW 마커 전용(다른 데 쓰지 말 것), Columbia Blue는 창백한 Pantone 290이지 네이비가 아님, 리본 행 높이는 고정이라 `shortName()`이 이름을 두 줄 안에 넣어야 함.
 
@@ -45,7 +47,7 @@ DOM을 파싱하지 않는다. 모든 dining 페이지가 **인라인 JS 전역�
 
 **`index.html`의 `statusOf()`는 컬럼비아 앱의 `getOpenStatus()` 포팅이다.** HHMM 정수 연산, 심야 영업의 `+2400` 랩어라운드까지 의도적으로 동일하다. "더 깔끔하게" 리팩터하지 말 것 — 공식 사이트와 답이 갈리는 순간 신뢰를 잃는다. 단 하나 다른 점: `now`를 기기 로컬이 아니라 뉴욕 시각으로 잡는다 (그쪽 앱의 버그).
 
-**로직을 고쳤으면 검증도 같이.** 파서는 `pytest`, 프론트 상태 계산은 `index.html?selftest`. 이 둘이 "컬럼비아가 뭔가 바꿨다"를 잡아내는 유일한 장치다.
+**로직을 고쳤으면 검증도 같이.** `pytest` 하나가 파서와 프론트를 모두 돈다 — `test_frontend.py`가 헤드리스 브라우저로 실제 페이지를 띄우고 `index.html?selftest`의 인페이지 어서션까지 실행한다. 셀프테스트를 늘리면 CI 커버리지가 같이 늘어나니, 프론트 로직 검증은 되도록 거기에 추가할 것.
 
 **컬럼비아의 산문형 시간 안내는 계산 가능하면 출력하지 않는다.** 그쪽 데이터가 자기모순인 경우가 있다(Everett은 산문에 "8 a.m. - 3 p.m.", 구조화 데이터엔 14:00). 둘 다 보여주면 이 페이지가 틀린 것처럼 보인다. 상태를 뽑은 것과 같은 숫자로 시간대를 출력하고, 산문은 계산할 게 없을 때만.
 
