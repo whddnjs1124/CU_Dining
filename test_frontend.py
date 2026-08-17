@@ -276,10 +276,14 @@ def test_the_page_still_works_with_no_network(browser, site):
         pg.goto(f"{site}?now={SPRING_TERM}")
         pg.wait_for_selector(".card")
         pg.evaluate("navigator.serviceWorker.ready")
-        pg.reload()                       # first load is not yet controlled
+        pg.reload()                       # the first load is never controlled
         pg.wait_for_selector(".card")
+        # Being active is not the same as controlling this page, and an
+        # uncontrolled page's dining.json fetch is never intercepted, so the
+        # cache below would stay empty. Wait for control before relying on it.
+        pg.wait_for_function("navigator.serviceWorker.controller !== null", timeout=15000)
         pg.wait_for_function(
-            "caches.open('data-v1').then(c => c.keys()).then(k => k.length > 0)", timeout=10000)
+            "caches.open('data-v1').then(c => c.keys()).then(k => k.length > 0)", timeout=15000)
 
         ctx.set_offline(True)
         offline = ctx.new_page()
