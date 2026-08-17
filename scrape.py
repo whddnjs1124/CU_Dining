@@ -17,6 +17,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
+from playwright.sync_api import TimeoutError as PlaywrightTimeout
 from playwright.sync_api import sync_playwright
 
 BASE = "https://dining.columbia.edu"
@@ -56,11 +57,30 @@ def names(tids, terms):
     return [text(terms[str(t)]["name"]) for t in tids or [] if str(t) in terms]
 
 
-def load(page):
-    page.goto(SOURCE, wait_until="domcontentloaded", timeout=60000)
-    # networkidle never settles (long-poll connections), so give the inline
-    # bootstrap a fixed window instead.
-    page.wait_for_function("typeof dining_nodes !== 'undefined'", timeout=30000)
+def load(page, attempts=3):
+    """Read the inline globals, retrying past an intermittent Cloudflare wall.
+
+    Roughly one scrape in fifteen gets the "Just a moment..." interstitial
+    instead of the real page: `goto` succeeds, `dining_nodes` never appears,
+    and the wait below times out. Retrying in the *same* browser context is
+    what makes this work -- the challenge page runs its JS and banks a
+    clearance cookie, so the next attempt usually sails through.
+    """
+    for attempt in range(1, attempts + 1):
+        page.goto(SOURCE, wait_until="domcontentloaded", timeout=60000)
+        try:
+            # networkidle never settles (long-poll connections), so give the
+            # inline bootstrap a fixed window instead.
+            page.wait_for_function("typeof dining_nodes !== 'undefined'", timeout=30000)
+            break
+        except PlaywrightTimeout:
+            blocked = "just a moment" in page.title().lower()
+            why = "Cloudflare challenge" if blocked else f"no dining_nodes (title: {page.title()!r})"
+            if attempt == attempts:
+                sys.exit(f"{why} after {attempts} attempts. Not writing.")
+            print(f"attempt {attempt}: {why}, retrying...", file=sys.stderr)
+            page.wait_for_timeout(5000)
+
     raw = page.evaluate(READ_GLOBALS)
     return {
         "locations": json.loads(raw["nodes"])["locations"],

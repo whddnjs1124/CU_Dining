@@ -8,8 +8,9 @@ import json
 from pathlib import Path
 
 import pytest
+from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
-from scrape import build, build_menus, check
+from scrape import build, build_menus, check, load
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -132,6 +133,71 @@ def test_menu_windows_flatten_with_names_resolved():
     assert eggs["allergens"] == ["Eggs"]
     assert eggs["dietary"] == ["Gluten Free"]
     assert w["stations"][0]["items"][1]["dietary"] == ["Vegan", "Gluten Free"]
+
+
+class FakePage:
+    """Stands in for a Playwright page that hits Cloudflare `blocked` times.
+
+    Real runs failed at exactly 30s -- goto succeeded, dining_nodes never
+    arrived -- so the interstitial is modelled as the wait timing out rather
+    than the navigation failing.
+    """
+
+    def __init__(self, blocked, payload):
+        self.blocked, self.payload, self.loads, self.waits = blocked, payload, 0, 0
+
+    def goto(self, *a, **k):
+        self.loads += 1
+
+    def wait_for_function(self, *a, **k):
+        if self.loads <= self.blocked:
+            raise PlaywrightTimeout("timed out")
+
+    def title(self):
+        return "Just a moment..." if self.loads <= self.blocked else "John Jay | Columbia Dining"
+
+    def wait_for_timeout(self, ms):
+        self.waits += 1
+
+    def evaluate(self, _):
+        return self.payload
+
+
+@pytest.fixture
+def payload(live):
+    return {"nodes": json.dumps({"locations": live["locations"]}),
+            "terms": json.dumps(live["terms"]),
+            "menus": json.dumps(live["menus"]),
+            "tz_offset": live["tz_offset"]}
+
+
+def test_load_retries_past_a_cloudflare_challenge(payload, live):
+    page = FakePage(blocked=1, payload=payload)
+    assert len(load(page)["locations"]) == len(live["locations"])
+    assert page.loads == 2, "should have reloaded once"
+    assert page.waits == 1, "should have paused before retrying"
+
+
+def test_load_survives_two_challenges(payload):
+    page = FakePage(blocked=2, payload=payload)
+    load(page)
+    assert page.loads == 3
+
+
+def test_load_gives_up_rather_than_writing_nothing(payload):
+    """Exiting non-zero is the point: the workflow then skips the commit and
+    yesterday's correct data stays published."""
+    page = FakePage(blocked=99, payload=payload)
+    with pytest.raises(SystemExit) as e:
+        load(page)
+    assert "Cloudflare" in str(e.value)
+    assert page.loads == 3, "should not hammer the site"
+
+
+def test_a_clean_load_does_not_retry(payload):
+    page = FakePage(blocked=0, payload=payload)
+    load(page)
+    assert page.loads == 1 and page.waits == 0
 
 
 # The committed dining.json is what the site actually serves, so it is worth
