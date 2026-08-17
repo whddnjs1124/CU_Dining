@@ -202,6 +202,95 @@ def test_location_names_are_escaped(page, site):
     assert not page.errors, page.errors
 
 
+# --- installable to the home screen ------------------------------------------
+
+@pytest.fixture
+def manifest():
+    return json.loads((ROOT / "manifest.webmanifest").read_text())
+
+
+def test_manifest_declares_a_standalone_app(manifest):
+    assert manifest["short_name"] == "CU Dining"
+    assert manifest["display"] == "standalone"
+    # Pages serves this from /CU_Dining/, so absolute paths would 404.
+    assert not manifest["start_url"].startswith("/")
+    assert not manifest["scope"].startswith("/")
+
+
+def test_declared_icons_exist_at_their_declared_size(manifest):
+    import struct
+    for icon in manifest["icons"]:
+        path = ROOT / icon["src"]
+        assert path.exists(), f"{icon['src']} is declared but missing"
+        w, h = struct.unpack(">II", path.read_bytes()[16:24])
+        assert f"{w}x{h}" == icon["sizes"], f"{icon['src']} is {w}x{h}, declared {icon['sizes']}"
+
+
+def test_a_maskable_icon_is_offered(manifest):
+    assert any("maskable" in i.get("purpose", "") for i in manifest["icons"])
+
+
+def test_ios_home_screen_icon_is_linked(page, site):
+    """iOS ignores the manifest icons and uses apple-touch-icon."""
+    visit(page, site, SPRING_TERM)
+    href = page.get_attribute('link[rel="apple-touch-icon"]', "href")
+    assert href and (ROOT / href).exists()
+
+
+def test_page_reaches_under_the_notch_and_pads_it_back(page, site):
+    """Installed, the page runs full-bleed; without the insets the masthead
+    would sit under the notch."""
+    visit(page, site, SPRING_TERM)
+    assert "viewport-fit=cover" in page.get_attribute('meta[name="viewport"]', "content")
+    # env() resolves to 0 in a normal tab, so the computed value proves
+    # nothing; read the rule itself.
+    rule = page.evaluate("""() => [...document.styleSheets[0].cssRules]
+        .filter(r => r.selectorText === '.wrap').map(r => r.style.padding)[0]""")
+    for side in ("top", "right", "bottom", "left"):
+        assert f"safe-area-inset-{side}" in rule, f"{side} inset missing from .wrap"
+
+
+def test_service_worker_never_prefers_cache_for_the_data():
+    """A cached menu shown as current is the failure this project exists to
+    avoid, so dining.json must be fetched first and only fall back."""
+    sw = (ROOT / "sw.js").read_text()
+    handler = sw[sw.index("endsWith('/dining.json')"):]
+    assert handler.index("fetch(request)") < handler.index("caches.match"), \
+        "dining.json must be network-first"
+
+
+def test_service_worker_expires_old_caches():
+    assert "caches.delete" in (ROOT / "sw.js").read_text()
+
+
+def test_the_page_still_works_with_no_network(browser, site):
+    """The point of installing it: usable in the Butler stacks.
+
+    Worth testing for real rather than by reading sw.js -- the first version
+    of this cached nothing, because it cloned the response inside a callback
+    that ran after the body had already been handed to the page.
+    """
+    ctx = browser.new_context()
+    pg = ctx.new_page()
+    try:
+        pg.goto(f"{site}?now={SPRING_TERM}")
+        pg.wait_for_selector(".card")
+        pg.evaluate("navigator.serviceWorker.ready")
+        pg.reload()                       # first load is not yet controlled
+        pg.wait_for_selector(".card")
+        pg.wait_for_function(
+            "caches.open('data-v1').then(c => c.keys()).then(k => k.length > 0)", timeout=10000)
+
+        ctx.set_offline(True)
+        offline = ctx.new_page()
+        offline.goto(f"{site}?now={SPRING_TERM}")
+        offline.wait_for_selector(".card", timeout=10000)
+        assert offline.locator(".card").count() == 16
+        assert offline.locator(".row:not(.glab)").count() > 0, "the dial should render too"
+    finally:
+        ctx.close()
+
+
 # --- layout ------------------------------------------------------------------
 
 @pytest.mark.parametrize("width", [320, 390, 768, 1200])

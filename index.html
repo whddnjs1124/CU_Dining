@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- viewport-fit=cover lets the page reach under the notch; the .wrap padding
+     below adds the safe-area insets back so nothing hides behind it. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Columbia Dining — what's open now</title>
 <meta name="description" content="Every Columbia dining hall and café on one page: who's serving right now, until when, and what's on today.">
 
@@ -11,6 +13,14 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23fbfaf7'/%3E%3Crect x='4' y='12' width='24' height='8' rx='1.5' fill='%23b9d9eb'/%3E%3Crect x='4' y='12' width='11' height='8' rx='1.5' fill='%238ba9bd'/%3E%3Crect x='14.2' y='6' width='2' height='20' fill='%239a7b3f'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101215" media="(prefers-color-scheme: dark)">
+
+<!-- Installable to the home screen. iOS ignores the manifest's icons for that
+     and uses apple-touch-icon, so both are declared. -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CU Dining">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <!-- This spreads by people pasting the link into group chats, so the preview
      card earns its keep. The URLs are absolute because most crawlers refuse to
@@ -58,7 +68,14 @@ body {
   font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-text-size-adjust: 100%;
 }
-.wrap { max-width: 48rem; margin: 0 auto; padding: 2rem 1.15rem 4rem; }
+/* Installed to the home screen the page runs full-bleed, so the masthead
+   would sit under the notch without these insets. They resolve to 0 in a
+   normal browser tab. */
+.wrap {
+  max-width: 48rem; margin: 0 auto;
+  padding: calc(2rem + env(safe-area-inset-top)) calc(1.15rem + env(safe-area-inset-right))
+           calc(4rem + env(safe-area-inset-bottom)) calc(1.15rem + env(safe-area-inset-left));
+}
 
 /* Carved caps: Georgia and its cousins are the most chiselled faces every
    machine already has, so the masthead costs zero requests. */
@@ -624,6 +641,12 @@ function selftest() {
   document.body.innerHTML = `<div class="wrap"><h1 class="carved">${
     failed ? failed + ' failed' : 'all passed'}</h1>
     <pre id="selftest" class="mono">${results.join('\n')}</pre></div>`;
+}
+
+// Registered after load so it never delays first paint, and skipped under
+// ?selftest so the worker can't sit between the tests and the network.
+if ('serviceWorker' in navigator && !new URLSearchParams(location.search).has('selftest')) {
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
 if (new URLSearchParams(location.search).has('selftest')) {
