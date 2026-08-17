@@ -156,7 +156,29 @@ dining.columbia.edu는 Cloudflare JS 챌린지 뒤에 있다. 조사 결과:
 - 상단: "updated N분 ago". `updated_at`이 6시간 이상 지났으면 경고 배너.
 - 다크모드는 `prefers-color-scheme` + `data-theme` 오버라이드.
 - `?now=2026-08-10T12:00:00-04:00` 쿼리로 현재 시각 오버라이드.
-- `?selftest` — 상태 로직 어서션 13개를 페이지에서 실행. 개점/마감임박/개점임박/마감, 심야 랩어라운드 3종, 공휴일 제외, 비활성 학기 블록, 시각 포맷.
+- `?selftest` — 상태 로직 어서션을 페이지에서 실행. 개점/마감임박/개점임박/마감, 심야 랩어라운드, 공휴일 제외, 비활성 학기 블록, 다이얼 좌표, 이름 축약.
+
+## 홈 화면 설치 (PWA)
+
+아이폰에서 공유 → "홈 화면에 추가"를 하면 브라우저 UI 없이 전체화면으로 뜬다. 앱스토어도, 개발자 계정도, 빌드 도구도 필요 없다 — 정적 파일 세 종류가 전부다.
+
+| 파일 | 역할 |
+|---|---|
+| `manifest.webmanifest` | `display: standalone`, 아이콘 목록. **경로는 전부 상대경로** — Pages가 `/CU_Dining/` 하위에 서빙하므로 절대경로는 404 |
+| `icon-*.png` | 다이얼 리본을 축소한 마크. `make_icons.py`로 재생성 |
+| `sw.js` | 서비스 워커 |
+
+`<link rel="apple-touch-icon">`이 따로 필요하다 — **iOS는 manifest의 `icons`를 홈 화면 아이콘으로 쓰지 않는다.**
+
+### 캐싱 규칙
+
+`dining.json`은 **network-first**, 실패했을 때만 캐시 폴백. cache-first로 두면 오래된 메뉴를 현재인 척 보여주게 되고, 그건 이 문서 전체가 피하려는 실패다. 폴백을 쓰더라도 `updated_at` 기반 6시간 경고 배너가 그대로 작동하므로 사용자는 속지 않는다. 셸(HTML·아이콘)은 cache-first — 정적이고 배포 때만 바뀐다. 캐시 이름에 버전을 넣고 `activate`에서 옛 캐시를 지운다(안 하면 배포해도 옛 셸이 계속 뜬다).
+
+**함정 하나 — 응답 복제는 동기적으로.** 첫 구현은 아무것도 캐시하지 못했다. `caches.open(...).then(c => c.put(url, res.clone()))` 형태였는데, 그 콜백은 `return res`로 페이지에 body를 넘긴 *뒤에* 실행되고, 이미 읽히는 중인 body는 clone할 수 없어 조용히 실패한다. 반드시 `return` 전에 `const copy = res.clone()`을 잡아두고 `waitUntil`에 넘길 것. 소스만 읽어서는 안 보이는 종류라 `test_the_page_still_works_with_no_network`가 실제로 오프라인 렌더를 확인한다.
+
+### standalone에서만 드러나는 것
+
+전체화면이 되면 상태바가 콘텐츠를 덮는다. `viewport-fit=cover` + `.wrap`의 네 방향 패딩에 `env(safe-area-inset-*)`를 더해 되돌려놨다. 일반 탭에서는 `env()`가 0으로 풀려 아무 변화가 없고, 그래서 **계산된 패딩값으로는 검증되지 않는다** — 테스트는 CSSOM에서 규칙 원문을 읽는다.
 
 ## 실패 모드
 

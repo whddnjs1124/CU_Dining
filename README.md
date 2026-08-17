@@ -36,6 +36,13 @@ arithmetic, same overnight wraparound — so this page never contradicts the
 official one. The one intentional difference: it uses New York time instead of
 your device's clock.
 
+## On your phone
+
+Open it in Safari, then Share → **Add to Home Screen**. It gets an icon, opens
+full screen without browser chrome, and keeps working when the signal doesn't —
+the last data it fetched stays available offline, and the page still tells you
+how old it is.
+
 ## Running it locally
 
 ```bash

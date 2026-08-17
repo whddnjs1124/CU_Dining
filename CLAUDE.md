@@ -10,6 +10,10 @@ Columbia Dining 대시보드. dining.columbia.edu를 30분마다 스크레이핑
 index.html                  앱 전체 (HTML + CSS + JS 인라인, 빌드 없음)
 dining.json                 스크레이퍼 산출물, 커밋됨
 og.png                      링크 미리보기 카드. 실제 페이지 스크린샷이다
+manifest.webmanifest        홈 화면 설치용. 경로는 전부 상대경로(Pages가 /CU_Dining/ 하위)
+sw.js                       서비스 워커. dining.json은 network-first, 셸은 cache-first
+icon-*.png                  앱 아이콘. make_icons.py로 재생성
+make_icons.py               아이콘 렌더러 (maskable 안전영역 상수가 여기 있다)
 scrape.py                   Playwright 스크레이퍼 (+ --recon 모드)
 test_scrape.py              파서 + 발행된 dining.json 검증
 test_frontend.py            헤드리스 브라우저로 실제 페이지 구동
@@ -44,6 +48,8 @@ DOM을 파싱하지 않는다. 모든 dining 페이지가 **인라인 JS 전역�
 **시간은 항상 `America/New_York`.** 서버(UTC)도 사용자 로컬도 아니다. Python은 `zoneinfo`, JS는 `Intl.DateTimeFormat`의 `timeZone` 옵션. 날짜 라이브러리 추가 금지.
 
 **열림/닫힘은 프론트에서 계산한다.** `dining.json`에는 시간대만 담고 상태 문자열은 담지 않는다. JSON이 30분 stale해도 상태 표시는 정확해야 하니까.
+
+**서비스 워커에서 `dining.json`은 절대 cache-first로 두지 않는다.** 네트워크 먼저, 실패했을 때만 캐시 폴백. 캐시된 메뉴를 현재인 척 보여주는 게 이 프로젝트가 처음부터 피하려던 실패다. 응답을 캐시에 넣을 땐 **`res.clone()`을 동기적으로** 호출할 것 — `return res` 뒤 콜백 안에서 부르면 페이지가 이미 body를 읽는 중이라 조용히 실패한다(실제로 겪었고 `test_the_page_still_works_with_no_network`가 잡는다).
 
 **`index.html`의 `statusOf()`는 컬럼비아 앱의 `getOpenStatus()` 포팅이다.** HHMM 정수 연산, 심야 영업의 `+2400` 랩어라운드까지 의도적으로 동일하다. "더 깔끔하게" 리팩터하지 말 것 — 공식 사이트와 답이 갈리는 순간 신뢰를 잃는다. 단 하나 다른 점: `now`를 기기 로컬이 아니라 뉴욕 시각으로 잡는다 (그쪽 앱의 버그).
 
