@@ -206,10 +206,19 @@ summary { cursor: pointer; font-size: .75rem; letter-spacing: .08em; color: var(
 summary::-webkit-details-marker { display: none; }
 summary::before { content: "+ "; }
 details[open] summary::before { content: "\2212 "; }
-.meal { margin-top: .85rem; }
-.meal > h3 { font-size: .6875rem; letter-spacing: .14em; margin: 0 0 .35rem; color: var(--dim); text-transform: uppercase; }
+/* Each meal is its own disclosure, so several can be open at once. */
+.meal { margin-top: .5rem; border-top: 1px solid var(--hair); padding-top: .5rem; }
+/* The meal is the category, so it outranks the station inside it. */
+.meal > summary { font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; }
+.meal .when { text-transform: none; letter-spacing: 0; color: var(--dim); margin-left: .3rem; }
+.nowtag {
+  font-size: .5625rem; letter-spacing: .12em; color: var(--brass);
+  border: 1px solid currentColor; border-radius: .15rem; padding: 0 .2rem;
+  margin-left: .3rem; vertical-align: .05em;
+}
+.meal[open] > summary { margin-bottom: .45rem; }
 .station { margin: 0 0 .55rem; }
-.station > strong { font-size: .75rem; letter-spacing: .06em; font-weight: 600; }
+.station > strong { font-size: .6875rem; letter-spacing: .08em; font-weight: 600; color: var(--dim); text-transform: uppercase; }
 .station ul { margin: .1rem 0 0; padding-left: 1rem; font-size: .875rem; }
 .tag {
   font-size: .625rem; letter-spacing: .05em; color: var(--dim);
@@ -346,6 +355,7 @@ function daySpans(loc, now) {
   return out.sort((a, b) => a.from - b.from);
 }
 
+const STALE_AFTER_HOURS = 12;
 const RANK = { open: 0, closing: 1, opening: 2, closed: 3, break: 4 };
 const PILL = { open: 'Open', closing: 'Closing soon', opening: 'Opens soon',
                closed: 'Closed', break: 'Closed for break' };
@@ -441,21 +451,32 @@ function nyHHMM(iso) {
   return +p.slice(0, 2) % 24 * 100 + +p.slice(3, 5);
 }
 
-function menuHTML(menus) {
+/* One disclosure per meal rather than one for the whole day, so lunch and
+   dinner can be open side by side. Deciding between them is the actual
+   question -- a single "Today's menu" made you expand everything to compare,
+   and collapsing it hid dinner while you were reading lunch. Whatever is being
+   served right now starts open. */
+function menuHTML(menus, now) {
   if (!menus.length) return '';
-  const body = menus.map(m => `
-    <div class="meal">
-      <h3 class="carved">${esc(m.meal || 'Menu')} <span class="mono">${
-        hhmmText(nyHHMM(m.date_from))}–${hhmmText(nyHHMM(m.date_to))}</span></h3>
-      ${m.stations.filter(s => s.items.length).map(s => `
+  return menus.map(m => {
+    const from = nyHHMM(m.date_from), to = nyHHMM(m.date_to);
+    const serving = dialHHMM(now.hhmm) >= dialHHMM(from) && dialHHMM(now.hhmm) <= dialHHMM(to);
+    const stations = m.stations.filter(s => s.items.length);
+    if (!stations.length) return '';
+    return `
+    <details class="meal"${serving ? ' open' : ''}>
+      <summary class="carved">${esc(m.meal || 'Menu')}
+        <span class="mono when">${hhmmText(from)}–${hhmmText(to)}</span>
+        ${serving ? '<span class="nowtag">now</span>' : ''}</summary>
+      ${stations.map(s => `
         <div class="station">
           <strong>${esc(s.name || 'Other')}</strong>
           <ul>${s.items.map(i => `<li>${esc(i.title)}${
             (i.dietary || []).map(d => `<span class="tag">${esc(d)}</span>`).join('')
           }</li>`).join('')}</ul>
         </div>`).join('')}
-    </div>`).join('');
-  return `<details><summary class="carved">Today's menu</summary>${body}</details>`;
+    </details>`;
+  }).join('');
 }
 
 function cardHTML(data, loc, now, st, spans) {
@@ -481,7 +502,7 @@ function cardHTML(data, loc, now, st, spans) {
       ${st.label === PILL[st.state] ? '' : `<div class="lead mono">${esc(st.label)}</div>`}
       ${second}
     </div>
-    ${menuHTML(todaysMenus(data, loc, now))}
+    ${menuHTML(todaysMenus(data, loc, now), now)}
   </article>`;
 }
 
@@ -511,7 +532,10 @@ function render(data) {
     banner.push(`<div class="banner"><strong>The dining halls are closed for the break.</strong>
       They reopen ${longDate(back)}. A few cafés are still serving.</div>`);
   }
-  if (age > 6 * 3600e3) {
+  // Scrapes run every three hours and GitHub delays them, so a single missed
+  // run is routine. Warn only once several in a row have failed, or the
+  // warning becomes background noise and stops meaning anything.
+  if (age > STALE_AFTER_HOURS * 3600e3) {
     banner.push(`<div class="banner">This page last reached Columbia
       ${Math.round(m / 60)} hours ago, so the hours below may be out of date.
       Check <a href="https://dining.columbia.edu">dining.columbia.edu</a>.</div>`);

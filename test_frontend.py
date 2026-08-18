@@ -148,9 +148,18 @@ def rerender(page, mutate):
 
 def test_stale_data_raises_a_warning(page, site):
     visit(page, site, SPRING_TERM)
-    rerender(page, "data.updated_at = new Date(Date.now() - 9*3600e3).toISOString();")
+    rerender(page, "data.updated_at = new Date(Date.now() - 20*3600e3).toISOString();")
     banner = page.inner_text("#banner")
     assert "hours ago" in banner and "out of date" in banner
+
+
+def test_one_missed_scrape_is_not_a_warning(page, site):
+    """Scrapes are three hours apart and GitHub delays them by up to an hour,
+    so a single skipped run can be seven hours old and is still routine.
+    Warning that early would train people to ignore the banner."""
+    visit(page, site, SPRING_TERM)
+    rerender(page, "data.updated_at = new Date(Date.now() - 8*3600e3).toISOString();")
+    assert "out of date" not in page.inner_text("#banner")
 
 
 def test_fresh_data_raises_no_warning(page, site):
@@ -159,31 +168,62 @@ def test_fresh_data_raises_no_warning(page, site):
     assert "out of date" not in page.inner_text("#banner")
 
 
+# menu_data is empty over break, so the menu path is exercised against a
+# payload shaped like the real one. Field names inside a dish remain unverified
+# until the term starts -- see build_item() in scrape.py.
+THREE_MEALS = """
+    const nid = data.locations.find(l => l.name.includes('John Jay')).nid;
+    const mk = (meal, f, t, stations) => ({ location_nids: [nid],
+      date_from: `2026-03-02T${f}:00`, date_to: `2026-03-02T${t}:00`, meal, stations });
+    data.menus = [
+      mk('Breakfast','10:00','16:00', [{ name: 'Main Line',
+        items: [{ title: 'Scrambled Eggs', dietary: ['Halal'] }] }]),
+      mk('Lunch','16:00','22:00', [{ name: 'Main Line',
+        items: [{ title: 'Peri Peri Chicken', dietary: ['Halal'], allergens: [] },
+                { title: 'Quinoa', dietary: ['Vegan'] }] }]),
+      mk('Dinner','22:00','02:00', [{ name: 'Grill',
+        items: [{ title: 'Vegan Burger', dietary: ['Vegan'] }] }]),
+    ];
+"""
+
+
 def test_menus_render(page, site):
-    """The menu path cannot be checked against live data until the term starts
-    (menu_data is empty over break), so it is exercised here with a payload
-    shaped like the real one. Field names inside a dish are still unverified.
-    """
     visit(page, site, SPRING_TERM)
-    rerender(page, """
-        const nid = data.locations.find(l => l.name.includes('John Jay')).nid;
-        data.menus = [{
-          location_nids: [nid],
-          date_from: '2026-03-02T16:00:00', date_to: '2026-03-02T22:00:00',
-          meal: 'Lunch',
-          stations: [{ name: 'Main Line', items: [
-            { title: 'Peri Peri Chicken', dietary: ['Halal'], allergens: [] },
-            { title: 'Quinoa', dietary: ['Vegan'] }]}],
-        }];
-    """)
+    rerender(page, THREE_MEALS)
     card = page.locator(".card", has_text="JOHN JAY").first
-    card.locator("summary").click()
     text = card.inner_text().lower()   # headings are uppercased in CSS
     assert "lunch" in text and "main line" in text
     assert "peri peri chicken" in text and "quinoa" in text
     assert "halal" in text and "vegan" in text
-    # date_from is UTC, so the heading must show New York time, not 16:00.
+    # date_from is UTC, so the label must show New York time, not 16:00.
     assert "11:00 am" in text
+
+
+def test_each_meal_is_its_own_category(page, site):
+    """Lunch and dinner have to be readable side by side -- choosing between
+    them is the actual question, and one combined disclosure meant you could
+    not see both."""
+    visit(page, site, SPRING_TERM)
+    rerender(page, THREE_MEALS)
+    card = page.locator(".card", has_text="JOHN JAY").first
+    meals = card.locator("details.meal")
+    assert meals.count() == 3
+    labels = [meals.nth(i).locator("summary").inner_text().lower() for i in range(3)]
+    assert "breakfast" in labels[0] and "lunch" in labels[1] and "dinner" in labels[2]
+
+    # Opening one must not close another.
+    meals.nth(0).locator("summary").click()
+    meals.nth(2).locator("summary").click()
+    assert card.locator("details.meal[open]").count() == 3
+
+
+def test_the_meal_being_served_starts_open(page, site):
+    visit(page, site, SPRING_TERM)      # 12:40pm, inside the lunch window
+    rerender(page, THREE_MEALS)
+    card = page.locator(".card", has_text="JOHN JAY").first
+    open_now = card.locator("details.meal[open]")
+    assert open_now.count() == 1
+    assert "lunch" in open_now.first.locator("summary").inner_text().lower()
 
 
 def test_no_menu_means_no_disclosure(page, site):

@@ -2,7 +2,13 @@ name: scrape
 
 on:
   schedule:
-    - cron: "7,37 * * * *"   # every 30 min; GitHub may delay this by 5-20 min
+    # Every three hours. Half-hourly was pointless: 185 consecutive scrapes
+    # produced zero change beyond the timestamp, and Columbia publishes menus
+    # in bulk months ahead (208 nodes already exist for Sept 4 - Nov 1), so
+    # there is nothing that changes on a half-hour scale. The lighter footprint
+    # also matters -- Cloudflare started blocking the runner outright.
+    # 00/03/06/09/12/15/18/21 UTC lands near breakfast, lunch and dinner in NY.
+    - cron: "0 */3 * * *"
   workflow_dispatch:
 
 # Only one scrape at a time -- two runs pushing to main would collide. Newer
