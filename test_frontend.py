@@ -16,7 +16,6 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import pytest
-from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).parent
 SPRING_TERM = "2026-03-02T12:40:00-05:00"   # a Monday with everything running
@@ -38,12 +37,7 @@ def site():
     srv.shutdown()
 
 
-@pytest.fixture(scope="session")
-def browser():
-    with sync_playwright() as p:
-        b = p.chromium.launch()
-        yield b
-        b.close()
+# `browser` comes from conftest.py, shared with test_scrape.py.
 
 
 @pytest.fixture
@@ -224,6 +218,45 @@ def test_the_meal_being_served_starts_open(page, site):
     open_now = card.locator("details.meal[open]")
     assert open_now.count() == 1
     assert "lunch" in open_now.first.locator("summary").inner_text().lower()
+
+
+# Columbia's prose hours and their own structured hours disagree in places --
+# Everett's note reads "8 a.m. - 3 p.m." while the data says 14:00. Printing
+# both makes this page look like the broken one, so the prose is suppressed
+# whenever the times can be computed instead.
+CONTRADICTORY_HOURS = """
+    const loc = data.locations.find(l => l.name.includes('John Jay'));
+    loc.open_hours_fields = [{
+      date_from: '2020-01-01T00:00:00', date_to: '2030-01-01T00:00:00',
+      days: [{ days_monday: [{ hours_from: '0800', hours_to: '1400' }] }],
+      displayed_hours: [{ title: 'Monday - Friday, 8 a.m. - 3 p.m.' }],
+    }];
+"""
+
+
+def test_prose_hours_are_hidden_when_the_real_ones_are_known(page, site):
+    visit(page, site, SPRING_TERM)
+    rerender(page, CONTRADICTORY_HOURS)
+    card = page.locator(".card", has_text="JOHN JAY").first
+    text = card.inner_text()
+    assert "2:00 PM" in text, "should state the hour it actually computed"
+    assert "3 p.m." not in text, "Columbia's contradicting prose must not appear beside it"
+
+
+def test_prose_hours_survive_when_there_is_nothing_to_compute(page, site):
+    """The note is all we have when a block carries no weekday hours, so it is
+    suppressed only where it would contradict, not everywhere."""
+    visit(page, site, SPRING_TERM)
+    rerender(page, """
+        const loc = data.locations.find(l => l.name.includes('John Jay'));
+        loc.open_hours_fields = [{
+          date_from: '2020-01-01T00:00:00', date_to: '2030-01-01T00:00:00',
+          days: [{ days_tuesday: [{ hours_from: '0800', hours_to: '1400' }] }],
+          displayed_hours: [{ title: 'By appointment only' }],
+        }];
+    """)
+    card = page.locator(".card", has_text="JOHN JAY").first
+    assert "By appointment only" in card.inner_text()
 
 
 def test_no_menu_means_no_disclosure(page, site):

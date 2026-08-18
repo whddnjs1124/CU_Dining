@@ -5,6 +5,7 @@ nothing.
 Run: pytest
 """
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -135,6 +136,65 @@ def test_menu_windows_flatten_with_names_resolved():
     assert w["stations"][0]["items"][1]["dietary"] == ["Vegan", "Gluten Free"]
 
 
+# --- what got us blocked ------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def browsers(playwright, browser):
+    """A page opened the way a scrape opens one, plus a plain default page to
+    compare it against."""
+    from scrape import open_page
+    scraper_browser, page = open_page(playwright)
+    yield page, browser.new_page()
+    scraper_browser.close()
+
+
+@pytest.fixture
+def scraper_page(browsers):
+    return browsers[0]
+
+
+def test_the_browser_does_not_announce_itself_as_automation(scraper_page):
+    """This is what took the scraper down for four hours on 2026-08-18.
+
+    Cloudflare went from challenging the occasional run to blocking every one.
+    navigator.webdriver was true and the UA said HeadlessChrome; both are
+    trivially readable from the page. Nothing caught it because nothing looked.
+    """
+    assert scraper_page.evaluate("navigator.webdriver") is False
+    assert "Headless" not in scraper_page.evaluate("navigator.userAgent")
+
+
+def test_the_user_agent_is_the_real_one_with_headless_removed(browsers):
+    """Not a hardcoded string. A fixed macOS UA contradicts navigator.platform
+    on a Linux runner, and a pinned Chrome version drifts from the engine
+    actually running -- each is a tell on its own. The only edit allowed is
+    dropping the word Headless.
+    """
+    scraper, plain = browsers
+    expected = plain.evaluate("navigator.userAgent").replace("HeadlessChrome", "Chrome")
+    assert scraper.evaluate("navigator.userAgent") == expected
+
+
+def test_failures_say_why_where_the_logs_cannot_be_read(monkeypatch, capsys):
+    """Actions logs need auth, so a bare exit reads as 'exit code 1' and the
+    cause has to be guessed from how long the step took -- which is how the
+    Cloudflare block was actually diagnosed. ::error:: lands in the public
+    annotations instead."""
+    from scrape import die
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    with pytest.raises(SystemExit):
+        die("Cloudflare challenge after 3 attempts. Not writing.")
+    assert "::error::Cloudflare challenge" in capsys.readouterr().out
+
+
+def test_local_runs_do_not_emit_workflow_commands(monkeypatch, capsys):
+    from scrape import die
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    with pytest.raises(SystemExit):
+        die("nope")
+    assert "::error::" not in capsys.readouterr().out
+
+
 class FakePage:
     """Stands in for a Playwright page that hits Cloudflare `blocked` times.
 
@@ -198,6 +258,40 @@ def test_a_clean_load_does_not_retry(payload):
     page = FakePage(blocked=0, payload=payload)
     load(page)
     assert page.loads == 1 and page.waits == 0
+
+
+# --- the workflow's own invariants -------------------------------------------
+# Checked as text rather than parsed YAML: three specific lines are not worth a
+# dependency, and each of these three was an actual outage.
+
+@pytest.fixture
+def workflow():
+    return (Path(__file__).parent / ".github/workflows/scrape.yml").read_text()
+
+
+def test_a_wedged_run_cannot_hold_the_queue(workflow):
+    """One run sat in progress for 53 minutes with others stacking up behind
+    it. A healthy scrape takes about a minute."""
+    match = re.search(r"timeout-minutes:\s*(\d+)", workflow)
+    assert match, "the job needs a timeout"
+    assert int(match.group(1)) <= 15
+
+
+def test_a_newer_run_supersedes_a_struggling_one(workflow):
+    assert re.search(r"cancel-in-progress:\s*true", workflow), \
+        "queueing behind a stuck run is how the 53-minute hang happened"
+
+
+def test_the_cadence_stays_gentle(workflow):
+    """Half-hourly produced 185 commits with zero content change and got the
+    runner blocked. Columbia publishes menus months ahead; there is nothing to
+    catch on a tighter loop."""
+    cron = re.search(r'cron:\s*"([^"]+)"', workflow)
+    assert cron, "no cron schedule found"
+    minute, hour = cron.group(1).split()[:2]
+    assert "," not in minute and "/" not in minute, f"more than once an hour: {cron.group(1)}"
+    step = re.match(r"\*/(\d+)", hour)
+    assert step and int(step.group(1)) >= 3, f"cadence tighter than 3h: {cron.group(1)}"
 
 
 # The committed dining.json is what the site actually serves, so it is worth

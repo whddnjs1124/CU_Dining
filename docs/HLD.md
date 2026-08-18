@@ -242,6 +242,19 @@ CI는 스크레이프 **직후** `pytest`를 돌린다. 갓 받은 페이로드�
 | `check()`에 래칫 복원 | `test_a_retired_location_does_not_wedge_the_scraper` |
 | `esc()` 무력화 | `test_location_names_are_escaped` |
 | `check()`를 "열린 곳 있나" 검사로 | `test_everything_closed_is_a_valid_scrape` |
+| SW clone을 콜백 안으로 | `test_the_page_still_works_with_no_network` |
+| `dining.json`을 cache-first로 | `test_service_worker_never_prefers_cache_for_the_data` |
+| safe-area inset 삭제 | `test_page_reaches_under_the_notch_and_pads_it_back` |
+| stale 임계값을 6시간으로 | `test_one_missed_scrape_is_not_a_warning` |
+| 끼니를 하나의 details로 병합 | `test_each_meal_is_its_own_category` |
+| **`AutomationControlled` 플래그 제거** | `test_the_browser_does_not_announce_itself_as_automation` |
+| **UA를 macOS로 하드코딩** | `test_the_user_agent_is_the_real_one_with_headless_removed` |
+| **`::error::` 출력 제거** | `test_failures_say_why_where_the_logs_cannot_be_read` |
+| **잡 타임아웃 삭제** | `test_a_wedged_run_cannot_hold_the_queue` |
+| **cron을 30분으로 복원** | `test_the_cadence_stays_gentle` |
+| **산문 시간 다시 표시** | `test_prose_hours_are_hidden_when_the_real_ones_are_known` |
+
+굵게 표시한 여섯은 8/18에 추가했다. 그 전까지 **이 프로젝트에서 가장 큰 장애였던 Cloudflare 차단이 테스트로 전혀 막혀 있지 않았다** — 지문은 페이지에서 두 줄이면 읽히는데 아무도 보지 않았다.
 
 ### 아직 검증 못 한 것
 

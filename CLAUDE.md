@@ -17,7 +17,8 @@ sw.js                       서비스 워커. dining.json은 network-first, 셸�
 icon-*.png                  앱 아이콘. make_icons.py로 재생성
 make_icons.py               아이콘 렌더러 (maskable 안전영역 상수가 여기 있다)
 scrape.py                   Playwright 스크레이퍼 (+ --recon 모드)
-test_scrape.py              파서 + 발행된 dining.json 검증
+conftest.py                 Playwright 공유 fixture (sync API는 세션당 1개만 가능)
+test_scrape.py              파서 · 발행 JSON · 브라우저 지문 · 워크플로 불변식
 test_frontend.py            헤드리스 브라우저로 실제 페이지 구동
 fixtures/globals.json       마지막으로 캡처한 원본 페이로드 (스크레이프마다 갱신)
 .github/workflows/scrape.yml
@@ -54,6 +55,8 @@ DOM을 파싱하지 않는다. 모든 dining 페이지가 **인라인 JS 전역�
 **서비스 워커에서 `dining.json`은 절대 cache-first로 두지 않는다.** 네트워크 먼저, 실패했을 때만 캐시 폴백. 캐시된 메뉴를 현재인 척 보여주는 게 이 프로젝트가 처음부터 피하려던 실패다. 응답을 캐시에 넣을 땐 **`res.clone()`을 동기적으로** 호출할 것 — `return res` 뒤 콜백 안에서 부르면 페이지가 이미 body를 읽는 중이라 조용히 실패한다(실제로 겪었고 `test_the_page_still_works_with_no_network`가 잡는다).
 
 **`index.html`의 `statusOf()`는 컬럼비아 앱의 `getOpenStatus()` 포팅이다.** HHMM 정수 연산, 심야 영업의 `+2400` 랩어라운드까지 의도적으로 동일하다. "더 깔끔하게" 리팩터하지 말 것 — 공식 사이트와 답이 갈리는 순간 신뢰를 잃는다. 단 하나 다른 점: `now`를 기기 로컬이 아니라 뉴욕 시각으로 잡는다 (그쪽 앱의 버그).
+
+**겪은 버그는 테스트를 남긴다.** 이 스위트는 커버리지가 아니라 **이미 우리를 문 것들의 목록**이다: 자동화 지문, 래칫 잠금, 방학 전체 휴업, 새벽 리본, SW clone 타이밍, 산문 시간 모순, 워크플로 타임아웃·주기. 새 버그를 고쳤으면 여기에 한 줄 추가할 것. 그리고 **테스트를 추가했으면 일부러 망가뜨려 잡히는지 확인할 것** — 안 잡히는 테스트는 있다는 착각만 남긴다.
 
 **로직을 고쳤으면 검증도 같이.** `pytest` 하나가 파서와 프론트를 모두 돈다 — `test_frontend.py`가 헤드리스 브라우저로 실제 페이지를 띄우고 `index.html?selftest`의 인페이지 어서션까지 실행한다. 셀프테스트를 늘리면 CI 커버리지가 같이 늘어나니, 프론트 로직 검증은 되도록 거기에 추가할 것.
 
