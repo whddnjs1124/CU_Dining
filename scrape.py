@@ -11,6 +11,7 @@ AngularJS app consumes, and it survives CSS/markup churn.
 """
 import html
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,8 +27,9 @@ ROOT = Path(__file__).parent
 OUT = ROOT / "dining.json"
 FIXTURES = ROOT / "fixtures"
 NY = ZoneInfo("America/New_York")
-UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+# navigator.webdriver is true without this, which is the loudest automation
+# tell there is. Measured: the flag flips it to false.
+LAUNCH_ARGS = ["--disable-blink-features=AutomationControlled"]
 # Columbia lists 16. Well below that means the payload broke, not that a café
 # closed; well above any plausible shrinkage so a real closure never wedges us.
 MIN_LOCATIONS = 8
@@ -57,14 +59,51 @@ def names(tids, terms):
     return [text(terms[str(t)]["name"]) for t in tids or [] if str(t) in terms]
 
 
-def load(page, attempts=3):
-    """Read the inline globals, retrying past an intermittent Cloudflare wall.
+def open_page(pw):
+    """A browser that doesn't advertise itself as automation.
 
-    Roughly one scrape in fifteen gets the "Just a moment..." interstitial
-    instead of the real page: `goto` succeeds, `dining_nodes` never appears,
-    and the wait below times out. Retrying in the *same* browser context is
-    what makes this work -- the challenge page runs its JS and banks a
-    clearance cookie, so the next attempt usually sails through.
+    Cloudflare went from challenging roughly one scrape in fifteen to
+    challenging every one from the GitHub runner. Two signals were measurably
+    wrong: `navigator.webdriver` was true, and the user agent said
+    `HeadlessChrome`.
+
+    The UA is derived from the browser's own rather than hardcoded. A fixed
+    macOS string would contradict `navigator.platform` on a Linux runner, and
+    a pinned Chrome version goes stale against the engine actually running --
+    both are tells in their own right.
+    """
+    browser = pw.chromium.launch(args=LAUNCH_ARGS)
+    probe = browser.new_page()
+    ua = probe.evaluate("navigator.userAgent").replace("HeadlessChrome", "Chrome")
+    probe.close()
+    context = browser.new_context(
+        user_agent=ua,
+        locale="en-US",
+        timezone_id="America/New_York",
+        viewport={"width": 1280, "height": 900},
+    )
+    return browser, context.new_page()
+
+
+def die(message):
+    """Exit non-zero, and make the reason legible from outside the run.
+
+    Actions logs need authentication to read, so a bare exit shows up only as
+    "Process completed with exit code 1" and the cause has to be inferred from
+    how long the step took. ::error:: becomes an annotation, which is public.
+    """
+    if os.environ.get("GITHUB_ACTIONS"):
+        print(f"::error::{message}")
+    sys.exit(message)
+
+
+def load(page, attempts=3):
+    """Read the inline globals, retrying past a Cloudflare wall.
+
+    The interstitial arrives instead of the real page: `goto` succeeds,
+    `dining_nodes` never appears, and the wait below times out. Retrying in the
+    *same* browser context is what makes this work -- the challenge page runs
+    its JS and banks a clearance cookie, so a later attempt can sail through.
     """
     for attempt in range(1, attempts + 1):
         page.goto(SOURCE, wait_until="domcontentloaded", timeout=60000)
@@ -77,9 +116,12 @@ def load(page, attempts=3):
             blocked = "just a moment" in page.title().lower()
             why = "Cloudflare challenge" if blocked else f"no dining_nodes (title: {page.title()!r})"
             if attempt == attempts:
-                sys.exit(f"{why} after {attempts} attempts. Not writing.")
-            print(f"attempt {attempt}: {why}, retrying...", file=sys.stderr)
-            page.wait_for_timeout(5000)
+                die(f"{why} after {attempts} attempts. Not writing.")
+            # Back off further each time: five seconds was not long enough to
+            # outlast a challenge that had decided to stick around.
+            pause = 5000 * 2 ** (attempt - 1)
+            print(f"attempt {attempt}: {why}, retrying in {pause // 1000}s...", file=sys.stderr)
+            page.wait_for_timeout(pause)
 
     raw = page.evaluate(READ_GLOBALS)
     return {
@@ -174,17 +216,16 @@ def check(data):
     """
     n = len(data["locations"])
     if n < MIN_LOCATIONS:
-        sys.exit(f"only {n} locations, expected at least {MIN_LOCATIONS}. Not writing.")
+        die(f"only {n} locations, expected at least {MIN_LOCATIONS}. Not writing.")
     if not any(l["open_hours_fields"] for l in data["locations"]):
-        sys.exit("no location carries any hours block at all. Not writing.")
+        die("no location carries any hours block at all. Not writing.")
 
 
 def recon(url):
     """Dump every non-asset response, then save rendered HTML to fixtures/."""
     FIXTURES.mkdir(exist_ok=True)
     with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page(user_agent=UA)
+        browser, page = open_page(p)
         seen = []
         page.on("response", seen.append)
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
@@ -208,8 +249,7 @@ def recon(url):
 
 def main():
     with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page(user_agent=UA)
+        browser, page = open_page(p)
         raw = load(page)
         browser.close()
 

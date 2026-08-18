@@ -5,10 +5,12 @@ on:
     - cron: "7,37 * * * *"   # every 30 min; GitHub may delay this by 5-20 min
   workflow_dispatch:
 
-# Only one scrape at a time -- two runs pushing to main would collide.
+# Only one scrape at a time -- two runs pushing to main would collide. Newer
+# runs win: a run that is struggling has nothing a later one won't redo, and
+# queueing behind it once left a run stuck for 53 minutes with others piling up.
 concurrency:
   group: scrape
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -16,6 +18,9 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    # A healthy run takes under a minute. Anything past this is wedged, and
+    # dying quickly beats holding the queue.
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v7
 
