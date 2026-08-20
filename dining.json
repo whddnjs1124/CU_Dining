@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-08-20T11:26:14-04:00",
+ "updated_at": "2026-08-20T14:26:33-04:00",
  "timezone_offset": -14400,
  "locations": [
   {
@@ -687,7 +687,7 @@
    "type": "dining_hall",
    "url": "https://dining.columbia.edu/content/faculty-house-2nd-floor-0",
    "description": "<p>Known for its delightful lunch featuring globally inspired cuisine, Faculty House emphasizes regionally grown and locally sourced ingredients. Student dining is open on the 2nd Floor for breakfast, lunch, and dinner.</p><p>At breakfast, for one swipe pick 4 items to get your day going: Coffee, OJ, breakfast sandwich, oatmeal, yogurt parfait, or fruit cup. </p><p>Lunch and dinner feature a main dish, pasta, a vegan entrée, plus a starch, veggie, salad, fruit and dessert! Click each menu below for details.</p><p>Faculty House accepts Dining Plan swipes, Dining Dollars and Flex Dollars. </p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
-   "crowd_id": null,
+   "crowd_id": "1338",
    "open_hours_fields": [
     {
      "date_from": "2026-01-20T12:30:00",
@@ -820,7 +820,7 @@
    "type": "dining_hall",
    "url": "https://dining.columbia.edu/content/faculty-house-4th-floor-skyline-room",
    "description": "<p>Faculty House's 4th Floor (the Skyline Room) will be open for student dining for lunch. The Fac Shack menu will be served buffet-style, with some variations. Use your Columbia Dining Plan swipe, Flex, or Dining Dollars. Barnard Exchange is also accepted.</p><p><em><strong>Menus are subject to change. For the most accurate allergen information, refer to the printed in-unit menus.</strong></em></p>",
-   "crowd_id": null,
+   "crowd_id": "875",
    "open_hours_fields": [
     {
      "date_from": "2026-01-20T16:00:00",
