@@ -31967,6 +31967,799 @@
    ]
   },
   {
+   "nid": "17590",
+   "type": "cu_dining_menu",
+   "title": "Fall John Jay Week 8 Thursday 10/29/26",
+   "locations": [
+    "10"
+   ],
+   "date_range": [
+    "333211",
+    "333319",
+    "333427"
+   ],
+   "date_range_fields": [
+    {
+     "date_from": "2026-10-29T09:00:00",
+     "date_to": "2026-10-29T14:59:00",
+     "menu_type": [
+      "6"
+     ],
+     "stations": [
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Eggs"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Scrambled Eggs"
+        },
+        {
+         "allergens": [
+          "Eggs"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Egg White Scramble "
+        },
+        {
+         "allergens": [
+          "Dairy",
+          "Eggs",
+          "Soy",
+          "Wheat"
+         ],
+         "prefs": [
+          "Vegetarian"
+         ],
+         "title": "Pancakes "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Vegetable Medley "
+        },
+        {
+         "allergens": [
+          "Soy",
+          "Sunflower Oil"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Home Fries "
+        },
+        {
+         "prefs": [
+          "Gluten Free"
+         ],
+         "title": "Chicken Patty "
+        }
+       ],
+       "station": [
+        "24"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Vegan Egg Patty "
+        },
+        {
+         "allergens": [
+          "Coconut",
+          "Sunflower Oil"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Vegan Sausage "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Vegetable Medley "
+        }
+       ],
+       "station": [
+        "29"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "title": "Iced Coffee Bar"
+        }
+       ],
+       "station": [
+        "10"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Oatmeal "
+        },
+        {
+         "allergens": [
+          "Dairy",
+          "Soy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Vegetarian"
+         ],
+         "title": "Chocolate Strawberry Oatmeal"
+        },
+        {
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Grits "
+        }
+       ],
+       "station": [
+        "28"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Dairy",
+          "Eggs",
+          "Pork",
+          "Soy",
+          "Wheat"
+         ],
+         "title": "Ham and Cheese Croissant "
+        },
+        {
+         "allergens": [
+          "Dairy",
+          "Eggs",
+          "Pork",
+          "Soy",
+          "Wheat"
+         ],
+         "title": "Chorizo and Egg Empanada "
+        }
+       ],
+       "station": [
+        "27"
+       ]
+      }
+     ],
+     "title": "Spring John Jay Week 7 Sunday"
+    },
+    {
+     "date_from": "2026-10-29T15:00:00",
+     "date_to": "2026-10-29T20:59:00",
+     "menu_type": [
+      "7"
+     ],
+     "stations": [
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Peri Peri Chicken "
+        },
+        {
+         "allergens": [
+          "Dairy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Garlic Butter Potatoes "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Quinoa "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Mixed Vegetables "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Black Eyed Peas "
+        }
+       ],
+       "station": [
+        "24"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Peri Peri Chicken "
+        },
+        {
+         "allergens": [
+          "Dairy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Garlic Butter Potatoes "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Mixed Vegetables "
+        }
+       ],
+       "station": [
+        "16"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Peri Peri Chicken "
+        },
+        {
+         "allergens": [
+          "Dairy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Garlic Butter Potatoes "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Mixed Vegetables "
+        }
+       ],
+       "station": [
+        "12"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Coconut",
+          "Sesame",
+          "Soy",
+          "Sunflower Oil",
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Dan Dan Impossible Beef"
+        },
+        {
+         "allergens": [
+          "Soy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Fried Rice "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Mixed Vegetables "
+        }
+       ],
+       "station": [
+        "29"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "title": "Iced Coffee Bar "
+        }
+       ],
+       "station": [
+        "10"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Dairy",
+          "Pork"
+         ],
+         "title": "Loaded Baked Potato"
+        },
+        {
+         "allergens": [
+          "Coconut"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Chipotle Sweet Potato"
+        },
+        {
+         "allergens": [
+          "Dairy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Vegetarian"
+         ],
+         "title": "Chocolate Strawberry Oatmeal "
+        }
+       ],
+       "station": [
+        "28"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Marinara"
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Primavera "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Rosemary Oil"
+        },
+        {
+         "allergens": [
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Pasta"
+        },
+        {
+         "allergens": [
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Whole Wheat Pasta"
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Bolognese "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Broccoli and Mushrooms "
+        },
+        {
+         "allergens": [
+          "Sesame",
+          "Soy",
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Garlic Rolls "
+        }
+       ],
+       "station": [
+        "159"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "title": "Tacos "
+        }
+       ],
+       "station": [
+        "11"
+       ]
+      }
+     ],
+     "title": "Spring John Jay Week 7 Sunday"
+    },
+    {
+     "date_from": "2026-10-29T21:00:00",
+     "date_to": "2026-10-30T03:59:00",
+     "menu_type": [
+      "8"
+     ],
+     "stations": [
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Lemon Pepper Chicken "
+        },
+        {
+         "allergens": [
+          "Eggs",
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Orzo "
+        },
+        {
+         "allergens": [
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Barley "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Roasted Brussels "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Northern Beans "
+        }
+       ],
+       "station": [
+        "24"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Lemon Pepper Chicken "
+        },
+        {
+         "allergens": [
+          "Eggs",
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegetarian"
+         ],
+         "title": "Orzo "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Roasted Brussels "
+        }
+       ],
+       "station": [
+        "16"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Lemon Pepper Chicken "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Lemon Herb Rice "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Roasted Brussels "
+        }
+       ],
+       "station": [
+        "12"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Soy"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Lemon Pepper Tofu "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Lemon Herb Rice"
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Roasted Brussels "
+        }
+       ],
+       "station": [
+        "29"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Dairy",
+          "Pork"
+         ],
+         "title": "Loaded Baked Potato"
+        },
+        {
+         "allergens": [
+          "Coconut"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Chipotle Sweet Potato "
+        }
+       ],
+       "station": [
+        "28"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Marinara "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Primavera"
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Rosemary Oil"
+        },
+        {
+         "allergens": [
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Pasta"
+        },
+        {
+         "allergens": [
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Whole Wheat Pasta"
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal"
+         ],
+         "title": "Bolognese "
+        },
+        {
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Broccoli and Mushrooms "
+        },
+        {
+         "allergens": [
+          "Sesame",
+          "Soy",
+          "Wheat"
+         ],
+         "prefs": [
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Garlic Rolls "
+        }
+       ],
+       "station": [
+        "159"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "title": "Tacos "
+        }
+       ],
+       "station": [
+        "11"
+       ]
+      },
+      {
+       "meals_paragraph": [
+        {
+         "allergens": [
+          "Dairy",
+          "Pork",
+          "Soy",
+          "Wheat"
+         ],
+         "title": "John Jay Burger "
+        },
+        {
+         "allergens": [
+          "Coconut",
+          "Sunflower Oil"
+         ],
+         "prefs": [
+          "Gluten Free",
+          "Halal",
+          "Vegan"
+         ],
+         "title": "Vegan Burger "
+        }
+       ],
+       "station": [
+        "33"
+       ]
+      }
+     ],
+     "title": "Spring John Jay Week 7 Sunday"
+    }
+   ]
+  },
+  {
    "nid": "17581",
    "type": "cu_dining_menu",
    "title": "Fall John Jay Week 8 Tuesday 10/27/26 ",
