@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-08-29T22:41:46-04:00",
+ "updated_at": "2026-08-30T04:45:13-04:00",
  "timezone_offset": -14400,
  "locations": [
   {
@@ -6246,80 +6246,6 @@
    ],
    "date_from": "2026-07-03T21:00:00",
    "date_to": "2026-07-04T03:59:00",
-   "meal": "Dinner",
-   "stations": [
-    {
-     "name": "Main Line",
-     "items": []
-    },
-    {
-     "name": "Halal Station",
-     "items": []
-    },
-    {
-     "name": "Vegan Station",
-     "items": []
-    },
-    {
-     "name": "Pasta Station",
-     "items": []
-    }
-   ]
-  },
-  {
-   "location_nids": [
-    "10"
-   ],
-   "date_from": "2026-06-29T09:00:00",
-   "date_to": "2026-06-29T14:59:00",
-   "meal": "Breakfast",
-   "stations": [
-    {
-     "name": "Main Line",
-     "items": []
-    },
-    {
-     "name": "Vegan Station",
-     "items": []
-    },
-    {
-     "name": "Nook",
-     "items": []
-    }
-   ]
-  },
-  {
-   "location_nids": [
-    "10"
-   ],
-   "date_from": "2026-06-29T15:00:00",
-   "date_to": "2026-06-29T20:59:00",
-   "meal": "Lunch",
-   "stations": [
-    {
-     "name": "Main Line",
-     "items": []
-    },
-    {
-     "name": "Halal Station",
-     "items": []
-    },
-    {
-     "name": "Vegan Station",
-     "items": []
-    },
-    {
-     "name": "Pasta Station",
-     "items": []
-    }
-   ]
-  },
-  {
-   "location_nids": [
-    "10"
-   ],
-   "date_from": "2026-06-29T21:00:00",
-   "date_to": "2026-06-30T03:59:00",
    "meal": "Dinner",
    "stations": [
     {
